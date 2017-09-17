@@ -59,16 +59,19 @@ var scatterChartData = {
         x: 7.2,
         y: 0.92,
       }],
-      borderColor: ['rgba(55,55,55,1)'],
+      borderColor: 'rgba(55,55,55,1)',
       borderDash: [4, 4],
       borderWidth: 1,
-      backgroundColor: ['rgba(255,255,255,0)'],
+      backgroundColor: 'rgba(255,255,255,0)',
       pointRadius: 0,
       fill: 'origin'
     }, {
       label: "crazed",
       data: [{
         x: 0.6,
+        y: 1,
+      }, {
+        x: 1.5,
         y: 1,
       }, {
         x: 1.6,
@@ -95,10 +98,10 @@ var scatterChartData = {
         x: 7.2,
         y: 0.62,
       }],
-      backgroundColor: ['rgba(155,155,155,.2)'],
+      backgroundColor: 'rgba(155,155,155,.2)',
       pointRadius: 0,
       borderWidth: 1,
-      borderColor: ['rgba(255,255,255,0)'],
+      borderColor: 'rgba(255,255,255,0)',
       fill: 'origin'
     }, {
       label: "underfired",
@@ -109,7 +112,7 @@ var scatterChartData = {
         x: 7.2,
         y: .65,
       }],
-      backgroundColor: ['rgba(175,175,255,1)'],
+      backgroundColor: 'rgba(175,175,255,1)',
       pointRadius: 0,
       lineTension: 0,
       borderWidth: 1,
@@ -125,11 +128,11 @@ var scatterChartData = {
         x: 7.2,
         y: 1,
       }],
-      backgroundColor: ['white'],
+      backgroundColor: 'rgba(255,255,255,1)',
       pointRadius: 0,
       lineTension: 0,
       borderWidth: 1,
-      borderColor: ['rgba(255,255,255,0)'],
+      borderColor: 'rgba(255,255,255,0)',
     }, {
       label: "semimattes",
       data: [{
@@ -142,11 +145,11 @@ var scatterChartData = {
         x: 5,
         y: 1,
       }],
-      backgroundColor: ['rgba(175,255,175,1)'],
+      backgroundColor: 'rgba(175,255,175,1)',
       pointRadius: 0,
       lineTension: 0,
       borderWidth: 1,
-      borderColor: ['rgba(255,255,255,0)'],
+      borderColor: 'rgba(255,255,255,0)',
     }, {
       label: "mattes",
       data: [{
@@ -159,11 +162,11 @@ var scatterChartData = {
         x: 7.2,
         y: 1,
       }],
-      backgroundColor: ['rgba(255,255,175,1)'],
+      backgroundColor: 'rgba(255,255,175,1)',
       pointRadius: 0,
       lineTension: 0,
       borderWidth: 1,
-      borderColor: ['rgba(255,255,255,0)'],
+      borderColor: 'rgba(255,255,255,0)',
     }, {
       label: "unfused",
       data: [{
@@ -173,11 +176,11 @@ var scatterChartData = {
         x: 6,
         y: 1,
       }],
-      backgroundColor: ['rgba(255,175,175,1)'],
+      backgroundColor: 'rgba(255,175,175,1)',
       pointRadius: 0,
       lineTension: 0,
       borderWidth: 1,
-      borderColor: ['rgba(255,255,255,0)'],
+      borderColor: 'rgba(255,255,255,0)',
     }
   ]
 };
