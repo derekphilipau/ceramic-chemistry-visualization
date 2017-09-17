@@ -1,2 +1,7 @@
 # Stull-Chart-Chart.js
+
+A repository for implementations of a SiO2:Al2O3 Stull Chart
+
+## Chart.js
+
 Stull Chart using https://github.com/chartjs/Chart.js
