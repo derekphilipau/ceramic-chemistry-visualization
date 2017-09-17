@@ -105,6 +105,7 @@ var scatterChartData = {
       borderWidth: 1,
       backgroundColor: 'rgba(255,255,255,0)',
       pointRadius: 0,
+      pointHoverRadius: 0,
       fill: 'origin'
     }, {
       label: 'crazed',
@@ -141,6 +142,7 @@ var scatterChartData = {
       }],
       backgroundColor: 'rgba(155,155,155,.2)',
       pointRadius: 0,
+      pointHoverRadius: 0,
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0)',
       fill: 'origin'
@@ -155,6 +157,7 @@ var scatterChartData = {
       }],
       backgroundColor: 'rgba(175,175,255,1)',
       pointRadius: 0,
+      pointHoverRadius: 0,
       lineTension: 0,
       borderWidth: 1,
     }, {
@@ -171,6 +174,7 @@ var scatterChartData = {
       }],
       backgroundColor: 'rgba(255,255,255,1)',
       pointRadius: 0,
+      pointHoverRadius: 0,
       lineTension: 0,
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0)',
@@ -188,6 +192,7 @@ var scatterChartData = {
       }],
       backgroundColor: 'rgba(175,255,175,1)',
       pointRadius: 0,
+      pointHoverRadius: 0,
       lineTension: 0,
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0)',
@@ -206,6 +211,7 @@ var scatterChartData = {
       }],
       backgroundColor: 'rgba(255,255,175,1)',
       pointRadius: 0,
+      pointHoverRadius: 0,
       lineTension: 0,
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0)',
@@ -222,9 +228,12 @@ var scatterChartData = {
 //      fill: true,
       backgroundColor: 'rgba(255,175,175,1)',
       pointRadius: 0,
+      pointHoverRadius: 0,
       lineTension: 0,
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0)',
+//      pointHoverBackgroundColor: 'transparent',
+//      pointHoverBorderColor: 'transparent',
     }
 
   ]
@@ -262,7 +271,6 @@ window.onload = function () {
       },
       scales: {
         xAxes: [{
-          /*
           afterTickToLabelConversion: function(scaleInstance) {
             // set the first and last tick to null so it does not display
             // note, ticks[0] is the last tick and ticks[length - 1] is the first
@@ -273,7 +281,6 @@ window.onload = function () {
             scaleInstance.ticksAsNumbers[0] = null;
             scaleInstance.ticksAsNumbers[scaleInstance.ticksAsNumbers.length - 1] = null;
           },
-          */
           type: 'linear',
           position: 'bottom',
           ticks: {
