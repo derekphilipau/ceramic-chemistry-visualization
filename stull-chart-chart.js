@@ -4,8 +4,7 @@ var showAxesNames = false;
 
 function generateRandomNumber(min=0, max=1, decimal=2) {
   return ((Math.random() * (max - min) + min).toFixed(decimal));
-};
-
+}
 function randSiO2() {
   return generateRandomNumber(1.5, 7.2);
 }
@@ -56,6 +55,7 @@ var scatterChartData = {
         y: .5,
         id: 23982
       }],
+      type: 'scatter',
       pointBackgroundColor: getFillColor(.2),
       pointStyle: ['triangle']
     }, {
@@ -65,6 +65,7 @@ var scatterChartData = {
         y: .6,
         id: 23980
       }],
+      type: 'scatter',
       pointBackgroundColor: getFillColor(.3),
     }, {
       label: 'r2o 4:6',
@@ -73,6 +74,7 @@ var scatterChartData = {
         y: .8,
         id: 23972
       }],
+      type: 'scatter',
       pointBackgroundColor: getFillColor(.4),
     }, {
       label: 'r2o 5:5',
@@ -81,21 +83,22 @@ var scatterChartData = {
         y: .55,
         id: 23922
       }],
+      type: 'scatter',
       pointBackgroundColor: getFillColor(.5),
     }, {
       label: 'crazed',
       data: [{
         x: 1.8,
-        y: 0.2,
+        y: 0.2
       }, {
         x: 4.2,
-        y: 0.6,
+        y: 0.6
       }, {
         x: 6.0,
-        y: 0.8,
+        y: 0.8
       }, {
         x: 7.2,
-        y: 0.92,
+        y: 0.92
       }],
       borderColor: 'rgba(55,55,55,1)',
       borderDash: [4, 4],
@@ -107,34 +110,34 @@ var scatterChartData = {
       label: 'crazed',
       data: [{
         x: 0.6,
-        y: 1,
+        y: 1
       }, {
         x: 1.5,
-        y: 1,
+        y: 1
       }, {
         x: 1.6,
-        y: 1,
+        y: 1
       }, {
         x: 2.4,
-        y: .25,
+        y: .25
       }, {
         x: 2.8,
-        y: .23,
+        y: .23
       }, {
         x: 3.3,
-        y: 0.25,
+        y: 0.25
       }, {
         x: 4.19,
-        y: 0.3,
+        y: 0.3
       }, {
         x: 4.2,
-        y: 0.3,
+        y: 0.3
       }, {
         x: 5.4,
-        y: 0.49,
+        y: 0.49
       }, {
         x: 7.2,
-        y: 0.62,
+        y: 0.62
       }],
       backgroundColor: 'rgba(155,155,155,.2)',
       pointRadius: 0,
@@ -145,10 +148,10 @@ var scatterChartData = {
       label: 'underfired',
       data: [{
         x: 1.6,
-        y: 0,
+        y: 0
       }, {
         x: 7.2,
-        y: .65,
+        y: .65
       }],
       backgroundColor: 'rgba(175,175,255,1)',
       pointRadius: 0,
@@ -158,13 +161,13 @@ var scatterChartData = {
       label: 'good',
       data: [{
         x: 0.6,
-        y: .09,
+        y: .09
       }, {
         x: 5,
-        y: 1,
+        y: 1
       }, {
         x: 7.2,
-        y: 1,
+        y: 1
       }],
       backgroundColor: 'rgba(255,255,255,1)',
       pointRadius: 0,
@@ -175,30 +178,31 @@ var scatterChartData = {
       label: 'semimattes',
       data: [{
         x: 0.6,
-        y: .09,
+        y: .09
       }, {
         x: 4,
-        y: 1,
+        y: 1
       }, {
         x: 5,
-        y: 1,
+        y: 1
       }],
       backgroundColor: 'rgba(175,255,175,1)',
       pointRadius: 0,
       lineTension: 0,
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0)',
-    }, {
+    },
+    {
       label: 'mattes',
       data: [{
         x: .6,
-        y: .42,
+        y: .42
       }, {
         x: 2.8,
-        y: 1,
+        y: 1
       }, {
         x: 7.2,
-        y: 1,
+        y: 1
       }],
       backgroundColor: 'rgba(255,255,175,1)',
       pointRadius: 0,
@@ -209,29 +213,31 @@ var scatterChartData = {
       label: 'unfused',
       data: [{
         x: 0.6,
-        y: 1,
+        y: 1
       }, {
         x: 6,
-        y: 1,
+        y: 1
       }],
+//      type: 'line',
+//      fill: true,
       backgroundColor: 'rgba(255,175,175,1)',
       pointRadius: 0,
       lineTension: 0,
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0)',
     }
+
   ]
 };
 
-scatterChartData.datasets[0].backgroundColor = 'rgba(55,55,55, .5)'
-scatterChartData.datasets[1].backgroundColor = 'rgba(100,100,100, .5)'
-scatterChartData.datasets[2].backgroundColor = 'rgba(150,150,150, .5)'
-scatterChartData.datasets[3].backgroundColor = 'rgba(200,200,200, .5)'
-scatterChartData.datasets[0].elements = [pointStyle = 'triangle']
-
 window.onload = function () {
-  var ctx = document.getElementById('canvas').getContext('2d');
-  window.myScatter = Chart.Scatter(ctx, {
+  var ctx = document.getElementById("stull-canvas").getContext('2d');
+
+  var stullScatter = new Chart(ctx, {
+//  var stullScatter = new Chart.Scatter(ctx, {
+//  window.stullScatter = new Chart.Scatter(ctx, {
+//    type: 'scatter',
+    type: 'line',
     data: scatterChartData,
     options: {
       title: {
@@ -247,14 +253,16 @@ window.onload = function () {
         },
         line: {
           borderWidth: 0
-        },
+        }
       },
-      scale: {
-        height: 10,
-        width: 10
+      plugins: {
+        filler: {
+          propagate: true
+        }
       },
       scales: {
         xAxes: [{
+          /*
           afterTickToLabelConversion: function(scaleInstance) {
             // set the first and last tick to null so it does not display
             // note, ticks[0] is the last tick and ticks[length - 1] is the first
@@ -265,6 +273,8 @@ window.onload = function () {
             scaleInstance.ticksAsNumbers[0] = null;
             scaleInstance.ticksAsNumbers[scaleInstance.ticksAsNumbers.length - 1] = null;
           },
+          */
+          type: 'linear',
           position: 'bottom',
           ticks: {
             min: 0.6,
@@ -273,7 +283,6 @@ window.onload = function () {
             fontSize: 10
           },
           gridLines: {
-            //                            drawTicks: false
             tickMarkLength: 5
           },
           scaleLabel: {
@@ -282,6 +291,8 @@ window.onload = function () {
           }
         }],
         yAxes: [{
+          type: 'linear',
+//          stacked: true,
           position: 'left',
           ticks: {
             min: 0,
@@ -300,8 +311,23 @@ window.onload = function () {
       }
     }
   });
+
+  document.getElementById("stull-canvas").onclick = function (evt) {
+    var activePoint = stullScatter.getElementAtEvent(event);
+
+    // make sure click was on an actual point
+    if (activePoint.length > 0) {
+      var clickedDatasetIndex = activePoint[0]._datasetIndex;
+      var clickedElementindex = activePoint[0]._index;
+      //var label = stullScatter.data.labels[clickedElementindex];
+      var value = stullScatter.data.datasets[clickedDatasetIndex].data[clickedElementindex];
+      //alert("Clicked: " + label + " - " + value);
+      alert("Clicked: " + JSON.stringify(value, null, 2));
+    }
+  };
 };
 
+/*
 $('#randomizeData').click(function () {
   scatterChartData.datasets[0].data = [{
     x: randSiO2(),
@@ -347,19 +373,6 @@ $('#randomizeData').click(function () {
     x: randSiO2(),
     y: randAl2O3(),
   }]
-  window.myScatter.update();
+  window.stullScatter.update();
 });
-
-document.getElementById("canvas").onclick = function(evt){
-  var activePoint = myScatter.getElementAtEvent(event);
-
-  // make sure click was on an actual point
-  if (activePoint.length > 0) {
-    var clickedDatasetIndex = activePoint[0]._datasetIndex;
-    var clickedElementindex = activePoint[0]._index;
-    //var label = myScatter.data.labels[clickedElementindex];
-    var value = myScatter.data.datasets[clickedDatasetIndex].data[clickedElementindex];
-    //alert("Clicked: " + label + " - " + value);
-    alert("Clicked: " + JSON.stringify(value, null, 2));
-  }
-};
+*/
