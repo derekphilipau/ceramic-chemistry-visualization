@@ -348,17 +348,31 @@ window.onload = function () {
     }
   });
 
-  document.getElementById("stull-canvas").onclick = function (evt) {
+  document.getElementById("stull-canvas").onclick = function (event) {
     var activePoint = stullScatter.getElementAtEvent(event);
 
     // make sure click was on an actual point
     if (activePoint.length > 0) {
-      var clickedDatasetIndex = activePoint[0]._datasetIndex;
-      var clickedElementindex = activePoint[0]._index;
-      //var label = stullScatter.data.labels[clickedElementindex];
-      var value = stullScatter.data.datasets[clickedDatasetIndex].data[clickedElementindex];
-      //alert("Clicked: " + label + " - " + value);
-      alert("Clicked: " + JSON.stringify(value, null, 2));
+      var datasetIndex = activePoint[0]._datasetIndex;
+      var elementindex = activePoint[0]._index;
+      var value = stullScatter.data.datasets[datasetIndex].data[elementindex];
+      window.location.href = "https://glazy.org/recipes/" + value.id;
+    }
+  };
+
+  document.getElementById("stull-canvas").onmousemove = function (event) {
+    var activePoint = stullScatter.getElementAtEvent(event);
+
+    // make sure click was on an actual point
+    if (activePoint.length > 0) {
+      var datasetIndex = activePoint[0]._datasetIndex;
+      var elementindex = activePoint[0]._index;
+      var value = stullScatter.data.datasets[datasetIndex].data[elementindex];
+      if (value && value.id >= 0) {
+        var elementName = "a[data-glazy-id='" + value.id +"']";
+        $(elementName).addClass('active-link');
+        setTimeout(function(){ $(elementName).removeClass('active-link') }, 1000);
+      }
     }
   };
 
