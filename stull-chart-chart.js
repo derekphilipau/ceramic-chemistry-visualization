@@ -1,22 +1,31 @@
 var showTitle = false;
 var showLegend = false;
 var showAxesNames = false;
+var defaultPointRadius = 4;
+var hoverPointRadius = 8;
+var pointBorderColor = 'rgba(150, 150, 150, 1)';
+var pointBorderColorHighlight = 'rgba(50, 50, 50, 1)';
 
 function generateRandomNumber(min=0, max=1, decimal=2) {
   return ((Math.random() * (max - min) + min).toFixed(decimal));
 }
+
 function randSiO2() {
   return generateRandomNumber(1.5, 7.2);
 }
+
 function randAl2O3() {
   return generateRandomNumber(0.2, 0.9);
 }
+
 function randR2O() {
   return generateRandomNumber(0.1, 0.9);
 }
+
 function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
+
 function getFillColor(r2o_total) {
 
   switch (round(Number(r2o_total) * 2, 1) / 2) {
@@ -46,47 +55,76 @@ function getFillColor(r2o_total) {
   return '200, 200, 200';
 }
 
+var recipeIndex = [
+  6246,
+  1824,
+  11136,
+  10404,
+  10771
+];
+
 var scatterChartData = {
   datasets: [
     {
-      label: 'r2o 2:8',
-      data: [{
-        x: 5,
-        y: .5,
-        id: 23982
-      }],
+      label: 'Recipes',
       type: 'scatter',
-      pointBackgroundColor: getFillColor(.2),
-      pointStyle: ['triangle']
-    }, {
-      label: 'r2o 3:7',
-      data: [{
-        x: 6,
-        y: .6,
-        id: 23980
-      }],
-      type: 'scatter',
-      pointBackgroundColor: getFillColor(.3),
-    }, {
-      label: 'r2o 4:6',
-      data: [{
-        x: 6,
-        y: .8,
-        id: 23972
-      }],
-      type: 'scatter',
-      pointBackgroundColor: getFillColor(.4),
-    }, {
-      label: 'r2o 5:5',
+      borderWidth: 1,
+      backgroundColor: 'transparent',
+      pointBorderWidth: 1,
+      showLine: false,
       data: [{
         x: 5,
         y: .55,
-        id: 23922
+        id: 6246
+      }, {
+        x: 4.8,
+        y: .6,
+        id: 1824
+      }, {
+        x: 6,
+        y: .8,
+        id: 11136
+      }, {
+        x: 6,
+        y: .6,
+        id: 10404
+      }, {
+        x: 5,
+        y: .5,
+        id: 10771
       }],
-      type: 'scatter',
-      pointBackgroundColor: getFillColor(.5),
+      // In order to programmatically access individual point attributes,
+      // each attribute type needs an array with an entry for each point
+      pointBackgroundColor: [
+        getFillColor(.3),
+        getFillColor(.4),
+        getFillColor(.25),
+        getFillColor(.5),
+        getFillColor(.18)
+      ],
+      pointBorderColor: [
+        pointBorderColor,
+        pointBorderColor,
+        pointBorderColor,
+        pointBorderColor,
+        pointBorderColor
+      ],
+      pointStyle: [
+        'circle',
+        'circle',
+        'triangle',
+        'circle',
+        'circle'
+       ],
+      pointRadius: [
+        defaultPointRadius,
+        defaultPointRadius,
+        defaultPointRadius,
+        defaultPointRadius,
+        defaultPointRadius
+      ]
     }, {
-      label: 'crazed',
+      label: 'Q line',
       data: [{
         x: 1.8,
         y: 0.2
@@ -106,9 +144,8 @@ var scatterChartData = {
       backgroundColor: 'rgba(255,255,255,0)',
       pointRadius: 0,
       pointHoverRadius: 0,
-      fill: 'origin'
     }, {
-      label: 'crazed',
+      label: 'Crazed Region',
       data: [{
         x: 0.6,
         y: 1
@@ -145,9 +182,8 @@ var scatterChartData = {
       pointHoverRadius: 0,
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0)',
-      fill: 'origin'
     }, {
-      label: 'underfired',
+      label: 'Underfired Region',
       data: [{
         x: 1.6,
         y: 0
@@ -161,7 +197,7 @@ var scatterChartData = {
       lineTension: 0,
       borderWidth: 1,
     }, {
-      label: 'good',
+      label: 'Bright Region',
       data: [{
         x: 0.6,
         y: .09
@@ -179,7 +215,7 @@ var scatterChartData = {
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0)',
     }, {
-      label: 'semimattes',
+      label: 'Semi-matte Region',
       data: [{
         x: 0.6,
         y: .09
@@ -198,7 +234,7 @@ var scatterChartData = {
       borderColor: 'rgba(255,255,255,0)',
     },
     {
-      label: 'mattes',
+      label: 'Matte Region',
       data: [{
         x: .6,
         y: .42
@@ -216,7 +252,7 @@ var scatterChartData = {
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0)',
     }, {
-      label: 'unfused',
+      label: 'Unfused Region',
       data: [{
         x: 0.6,
         y: 1
@@ -224,28 +260,22 @@ var scatterChartData = {
         x: 6,
         y: 1
       }],
-//      type: 'line',
-//      fill: true,
       backgroundColor: 'rgba(255,175,175,1)',
       pointRadius: 0,
       pointHoverRadius: 0,
       lineTension: 0,
       borderWidth: 1,
       borderColor: 'rgba(255,255,255,0)',
-//      pointHoverBackgroundColor: 'transparent',
-//      pointHoverBorderColor: 'transparent',
     }
 
   ]
 };
 
+
 window.onload = function () {
   var ctx = document.getElementById("stull-canvas").getContext('2d');
 
   var stullScatter = new Chart(ctx, {
-//  var stullScatter = new Chart.Scatter(ctx, {
-//  window.stullScatter = new Chart.Scatter(ctx, {
-//    type: 'scatter',
     type: 'line',
     data: scatterChartData,
     options: {
@@ -258,7 +288,7 @@ window.onload = function () {
       },
       elements: {
         point: {
-          radius: 4
+          radius: defaultPointRadius
         },
         line: {
           borderWidth: 0
@@ -299,7 +329,6 @@ window.onload = function () {
         }],
         yAxes: [{
           type: 'linear',
-//          stacked: true,
           position: 'left',
           ticks: {
             min: 0,
@@ -332,54 +361,31 @@ window.onload = function () {
       alert("Clicked: " + JSON.stringify(value, null, 2));
     }
   };
-};
 
-/*
-$('#randomizeData').click(function () {
-  scatterChartData.datasets[0].data = [{
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }];
-  scatterChartData.datasets[1].data = [{
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }, {
-    x: randSiO2(),
-    y: randAl2O3(),
-  }]
-  window.stullScatter.update();
-});
-*/
+  function highlight(id) {
+    index  = jQuery.inArray( id, recipeIndex );
+    if (index >= 0) {
+      stullScatter.data.datasets[0].pointRadius[index] = hoverPointRadius;
+      stullScatter.data.datasets[0].pointBorderColor[index] = pointBorderColorHighlight;
+      stullScatter.update();
+    }
+  }
+
+  function dehighlight(id) {
+    index  = jQuery.inArray( id, recipeIndex );
+    if (index >= 0) {
+      stullScatter.data.datasets[0].pointRadius[index] = defaultPointRadius;
+      stullScatter.data.datasets[0].pointBorderColor[index] = pointBorderColor;
+      stullScatter.update();
+    }
+  }
+
+  $('.glazy-link').bind({
+    mouseenter: function (e) {
+      highlight($(this).data('glazy-id'));
+    },
+    mouseleave: function (e) {
+      dehighlight($(this).data('glazy-id'));
+    }
+  });
+};

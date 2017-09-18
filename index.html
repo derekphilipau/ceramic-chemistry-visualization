@@ -1,30 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Stull Charts</title>
 
+    <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js"></script>
+    <style>
+        body {
+            padding-top: 2rem;
+        }
+    </style>
 </head>
 
 <body>
+<div class="container">
 
-<h2>Chart.js Example</h2>
-<div>
-    <div style="width: 300px">
-        <canvas id="stull-canvas" width="300" height="300"></canvas>
+    <h2>Chart.js Example</h2>
+    <hr/>
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                <div style="width: 300px">
+                    <canvas id="stull-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3>Glazy Links</h3>
+            <p>
+                Hover over link with mouse to highlight the recipe on the Stull Chart.
+            </p>
+            <ul>
+                <li><a class="glazy-link" data-glazy-id="10771" href="https://glazy.org/recipes/10771">Indigo Sky</a></li>
+                <li><a class="glazy-link" data-glazy-id="10404" href="https://glazy.org/recipes/10404">Toms Nuka 3</a></li>
+                <li><a class="glazy-link" data-glazy-id="11136" href="https://glazy.org/recipes/11136">NR 39</a></li>
+                <li><a class="glazy-link" data-glazy-id="6246" href="https://glazy.org/recipes/6246">421 Matte</a></li>
+                <li><a class="glazy-link" data-glazy-id="1824" href="https://glazy.org/recipes/1824">Clear Base 2 Lisa Orr</a></li>
+            </ul>
+        </div>
     </div>
+
 </div>
 
-<button id="randomizeData">Randomize Data</button>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js"></script>
 
 <script src="stull-chart-chart.js"></script>
 
 </body>
 </html>
+
+
+
