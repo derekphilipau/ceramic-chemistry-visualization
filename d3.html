@@ -5,7 +5,7 @@
     <style>
 
         body {
-            font: 10px sans-serif;
+            font: 12px sans-serif;
         }
 
         .axis path,
@@ -28,9 +28,10 @@
         }
 
         .d3-tip {
-            line-height: 1;
-            font-weight: bold;
-            padding: 12px;
+            font-size: .875rem;
+            line-height: 1.125rem;
+            font-weight: normal;
+            padding: .75rem;
             background: rgba(0, 0, 0, 0.8);
             color: #fff;
             border-radius: 2px;
@@ -162,10 +163,26 @@
     var tip = d3.tip().attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(function (d) {
-        return d.name + "<br/>"
-            + "<strong>SiO<sub>2</sub>:Al<sub>2</sub>O<sub>3</sub>:</strong> <span style='color:red'>"
-            + Number(d.x).toFixed(2) + ":"
-            + Number(d.y).toFixed(2) + "</span>";
+        var ortonCone = '';
+        if (d.from_orton_cone_name) {
+          if (d.to_orton_cond_name) {
+            ortonCone = "&Delta;" + d.from_orton_cone_name + "-" + d.to_orton_cone_name + " ";
+          }
+          else {
+            ortonCone = "&Delta;" + d.from_orton_cone_name + " ";
+          }
+        }
+        return ortonCone + d.name
+          + "<p>"
+          + Number(d.x).toFixed(2) + " SiO<sub>2</sub>, "
+          + Number(d.y).toFixed(2) + " Al<sub>2</sub>O<sub>3</sub>"
+          + "<br/><span style='color:red'>"
+          + Number(d.analysis.umf_analysis.SiO2_Al2O3_ratio).toFixed(2)
+          + "</span> SiO<sub>2</sub>:Al<sub>2</sub>O<sub>3</sub>"
+          + "<br/><span style='color:yellow'>"
+          + Number(d.analysis.umf_analysis.R2O_total).toFixed(1) + ":"
+          + Number(d.analysis.umf_analysis.RO_total).toFixed(1) + "</span> R2O:RO"
+          + "</p>";
     });
 
     svg.call(tip);
