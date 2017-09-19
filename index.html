@@ -28,20 +28,36 @@
 <div class="container">
 
     <h1>Javascript Stull Charts</h1>
+    <h5>
+        Implementations of a SiO2:Al2O3 Stull Chart using various Javascript libraries.
+    </h5>
 
+    <h2>Introduction</h2>
+    <hr/>
     <p>
-        Implementations of a SiO2:Al2O3 Stull Chart using various Javascript libraries
+        The primary difficulty with making Stull Charts in Javascript is combining
+        the bottom "region" layers with an overlapping scatter plot of actual UMF analyses for recipes.
+        Furthermore, each point in the scatter plot contains additional color-coded information (R2O:RO).
     </p>
 
     <h3><a href="https://github.com/derekphilipau/Javascript-Stull-Charts">View on Github</a></h3>
 
     <h2>d3.js Example</h2>
     <hr/>
+    <p>
+        After experimenting with a number of Javascript charting libraries, it seems that d3 is
+        ultimately the best choice due to its ability to draw complex charts with multiple layers.
+        This d3 example uses actual recipe data from an externally loaded JSON file.
+    </p>
     <a href="d3.html">Click here for d3 version (in progress)</a>
 
 
     <h2>Chart.js Example</h2>
     <hr/>
+    <p>
+        While having a much simpler interface than d3, Chart.js does allow one to combine a line
+        chart (for drawing the underlying Stull regions) with scatter plot data.
+    </p>
     <div class="row">
         <div class="col-md-6">
             <div>
@@ -76,6 +92,10 @@
 
     <h2>Highcharts Example</h2>
     <hr/>
+    <p>
+        This is a static version of the Highcharts implementation on
+        <a href="https://glazy.org">https://glazy.org</a>
+    </p>
     <div class="row">
         <div class="col-md-12">
             <div id="scatter" class="chart-scatter"></div>
