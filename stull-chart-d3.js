@@ -40,11 +40,11 @@ var heatColor = {
   "1235" : "#ffbb00",
   "1230" : "#ff9900",
   "1225" : "#ff7700"
-}
+};
 
 var margin = { top: 20, right: 20, bottom: 30, left: 30 };
-width = 640 - margin.left - margin.right,
-  height = 480 - margin.top - margin.bottom;
+var width = 800 - margin.left - margin.right,
+  height = 550 - margin.top - margin.bottom;
 
 var svg = d3.select("#stull-chart-d3").append("svg")
   .attr("width", width + margin.left + margin.right)
@@ -84,6 +84,18 @@ d3.json("api_output.json", function(error, data) {
     index -= 1;
   }
 
+  /*************************************
+   * Button & Zoom Setup
+   * ***********************************/
+  d3.select("button")
+    .on("click", resetted);
+
+  var zoom = d3.zoom()
+    .scaleExtent([1, 40])
+    .translateExtent([[-100, -100], [width + 90, height + 100]])
+    .on("zoom", zoomed);
+
+  svg.call(zoom);
 
   /*************************************
    * Chart Scale & Axes
@@ -107,7 +119,7 @@ d3.json("api_output.json", function(error, data) {
     .tickSize(-height)
     .ticks(20);
 
-  svg.append("g")
+  var gX = svg.append("g")
     .attr("class", "x axis")
     .attr('id', "axis--x")
     .attr("transform", "translate(0," + height + ")")
@@ -128,7 +140,7 @@ d3.json("api_output.json", function(error, data) {
     .tickSize(-width)
     .ticks(20 * height / width);
 
-  svg.append("g")
+  var gY = svg.append("g")
     .attr("class", "y axis")
     .attr('id', "axis--y")
     .call(yAxis);
@@ -141,33 +153,6 @@ d3.json("api_output.json", function(error, data) {
     .attr("dx", "-.5em")
     .style("text-anchor", "end")
     .text("Al₂O₃");
-
-  /*
-   var brush = d3.brush().on("end", brushended),
-   idleTimeout,
-   idleDelay = 350;
-
-   function brushended() {
-   var s = d3.event.selection;
-   if (!s) {
-   if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
-   x.domain(x0);
-   y.domain(y0);
-   } else {
-   x.domain([s[0][0], s[1][0]].map(x.invert, x));
-   y.domain([s[1][1], s[0][1]].map(y.invert, y));
-   svg.select(".brush").call(brush.move, null);
-   }
-   zoom();
-   }
-
-  svg.append("g")
-    .attr("class", "brush")
-    .call(brush);
-*/
-
-
-
 
   /*************************************
    * Heat map contours
@@ -506,7 +491,6 @@ d3.json("api_output.json", function(error, data) {
     })
     .curve(d3.curveCardinalClosed);
 
-
   scatter.selectAll("contour")
     .data([c1280])
     .enter().append("polygon")
@@ -733,9 +717,6 @@ d3.json("api_output.json", function(error, data) {
     })
     .attr("opacity", 0.5)
     .style("fill", "url(#diagonalHatch)");
-//      .style("fill", "url(#lightstripe)");
-  //      .style("fill", "#ccccff");
-
 
   var linearLineFunction = d3.line()
     .x(function (d) {
@@ -762,7 +743,6 @@ d3.json("api_output.json", function(error, data) {
     .style("stroke", "#000000")
     .style("stroke-dasharray", ("3, 3"))
     .style("stroke-width", 1);
-
 
   scatter.append("text")
     .attr("x", function(d) { return x(1.9); })
@@ -827,9 +807,7 @@ d3.json("api_output.json", function(error, data) {
         + "</p>";
     });
 
-
   scatter.call(tip);
-
 
   /*************************************
    * Recipe points
@@ -856,121 +834,42 @@ d3.json("api_output.json", function(error, data) {
     .on('mouseover', tip.show)
     .on('mouseout', tip.hide);
 
-
-
   function idled() {
     idleTimeout = null;
   }
-/*
-  function zoom() {
-    var t = svg.transition().duration(750);
-    svg.select(".axis--x").transition(t).call(xAxis);
-    svg.select(".axis--y").transition(t).call(yAxis);
-    svg.selectAll("circle").transition(t)
-      .attr("cx", function(d) { return x(d[0]); })
-      .attr("cy", function(d) { return y(d[1]); });
-  }
-*/
-  function zoom() {
 
+  function zoomed() {
+    scatter.attr("transform", d3.event.transform);
+    gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
+    gY.call(yAxis.scale(d3.event.transform.rescaleY(y)));
+    /*
     var t = scatter.transition().duration(750);
     svg.select("#axis--x").transition(t).call(xAxis);
     svg.select("#axis--y").transition(t).call(yAxis);
-/*
-    scatter.selectAll("text")
-      .attr("transform", function(d) {
-        return "translate(" + d.x + "," + d.y + ")";
-      });
 
-    /*
-        scatter.selectAll("text").transition(t)
-          .attr("x", function(d) { return x(d.x); })
-          .attr("y", function(d) { return y(d.y); });
-
-     d3.selectAll('text')
-     .attr('transform', function(d) {
-     return 'translate(' + d.point + ')scale(' + (1/d3.event.scale) + ')';
-     })
-     .attr('opacity', function(d) {
-     if (d3.event.scale > d.scaleThreshold) {
-     return d.opacityScale(d3.event.scale);
-     }
-     return 0;
-     });
-          */
     scatter.selectAll("text")
       .attr("opacity", 0);
+
     scatter.selectAll("circle").transition(t)
       .attr("cx", function (d) { return x(d.x); })
       .attr("cy", function (d) { return y(d.y); });
+
     scatter.selectAll("polygon").transition(t)
       .attr("points", function(d) {
         return d.map(function(d) {
           return [x(d.x),y(d.y)].join(",");
         }).join(" ");
       });
+
     scatter.selectAll("line").transition(t)
       .attr("d", function(d) { return linearLineFunction(d.values)});
-
+      */
   }
 
-  /*
-   svg.append("g")
-   .attr("class", "x axis")
-   .attr("transform", "translate(0," + height + ")")
-   .call(xAxis)
+  function resetted() {
+    svg.transition()
+      .duration(750)
+      .call(zoom.transform, d3.zoomIdentity);
+  }
 
-   svg.append("g")
-   .attr("class", "y axis")
-   .call(yAxis)
-
-
-   svg.append("text")
-   .attr("transform", "rotate(-90)")
-   .attr("y", 6)
-   .attr("dy", "1em")
-   .style("text-anchor", "end")
-   .text("SiO₂");
-   */
-  /*
-   scatter.append("g")
-   .attr("class", "brush")
-   .call(brush);
-
-   function brushended() {
-
-   var s = d3.event.selection;
-   if (!s) {
-   if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
-   x.domain(d3.extent(data, function (d) { return d.analysis.umf_analysis.SiO2; })).nice();
-   y.domain(d3.extent(data, function (d) { return d.analysis.umf_analysis.Al2O3; })).nice();
-   } else {
-
-   x.domain([s[0][0], s[1][0]].map(x.invert, x));
-   y.domain([s[1][1], s[0][1]].map(y.invert, y));
-   scatter.select(".brush").call(brush.move, null);
-   }
-   zoom();
-   }
-
-   function idled() {
-   idleTimeout = null;
-   }
-
-   function zoom() {
-
-   var t = scatter.transition().duration(750);
-   svg.select("#axis--x").transition(t).call(xAxis);
-   svg.select("#axis--y").transition(t).call(yAxis);
-   scatter.selectAll("circle").transition(t)
-   .attr("cx", function (d) { return x(d.analysis.umf_analysis.SiO2); })
-   .attr("cy", function (d) { return y(d.analysis.umf_analysis.Al2O3); });
-   scatter.selectAll("polygon").transition(t)
-   .attr("points", function(d) {
-   return d.map(function(d) {
-   return [x(d.analysis.umf_analysis.SiO2),y(d.analysis.umf_analysis.Al2O3)].join(",");
-   }).join(" ");
-   });
-   }
-   */
 });
