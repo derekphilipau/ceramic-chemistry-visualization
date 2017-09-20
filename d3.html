@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Javascript Stull Charts</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
     <style>
 
         body {
-            font: 12px sans-serif;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        h3 {
+            margin-top: 2rem;
+        }
+
+        .row {
+            margin-bottom: 1rem;
+        }
+
+        hr {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
         }
 
         .axis path,
@@ -58,12 +80,12 @@
 
         .axis-names {
             font-size: 1.25rem;
-            font-weight: 100;
+            font-weight: 200;
             color: rgba(0, 0, 0, 0.8);
         }
         .stull-region-names {
             font-size: 1rem;
-            font-weight: 100;
+            font-weight: 200;
         }
 
         .stull-temp-names {
@@ -79,750 +101,36 @@
 
 
 <body>
+<div class="container">
+    <h1>Javascript Stull Charts</h1>
+    <p class="lead">
+        d3.js implementation with Stull Regions, Temperature, Pan & Zoom
+    </p>
+    <div class="row">
+    </div>
+    <div class="row">
+        <div class="col-sm-12" id="stull-chart-d3">
+        </div>
+    </div>
+</div>
+<svg height="0" width="0" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <pattern id="diagonalHatch" width="5" height="5" patternTransform="rotate(-45 0 0)" patternUnits="userSpaceOnUse">
+        <line x1="0" y1="0" x2="0" y2="10" style="stroke:rgba(0, 0, 0, .3); stroke-width:2" />
+    </pattern>
+</svg>
+        <!--
+<svg height="0" width="0" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <pattern id="diagonalHatch" width="5" height="5" patternTransform="rotate(-45 0 0)" patternUnits="userSpaceOnUse">
+        <line x1="0" y1="0" x2="0" y2="10" style="stroke:rgba(0, 0, 0, .3); stroke-width:2" />
+    </pattern>
+</svg>
+-->
+<button>Reset</button>
+
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 
-<script>
+<script src="./stull-chart-d3.js"></script>
 
-
-  function round(value, decimals) {
-    return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
-  }
-
-  function getFillColor(r2o_total) {
-
-    switch (round(Number(r2o_total) * 2, 1) / 2) {
-      case 1:     return 'rgba(195, 150, 150, 1)';
-      case .95:   return 'rgba(210, 150, 150, 1)';
-      case .9:    return 'rgba(225, 150, 150, 1)';
-      case .85:   return 'rgba(240, 150, 150, 1)';
-      case .8:    return 'rgba(255, 150, 150, 1)';
-      case .75:   return 'rgba(255, 165, 150, 1)';
-      case .7:    return 'rgba(255, 180, 150, 1)';
-      case .65:   return 'rgba(255, 195, 150, 1)';
-      case .6:    return 'rgba(255, 210, 150, 1)';
-      case .55:   return 'rgba(255, 225, 150, 1)';
-      case .5:    return 'rgba(255, 240, 150, 1)';
-      case .45:   return 'rgba(255, 255, 165, 1)';
-      case .4:    return 'rgba(255, 255, 195, 1)';
-      case .35:   return 'rgba(255, 255, 225, 1)';
-      case .3:    return 'rgba(255, 255, 255, 1)';
-      case .25:   return 'rgba(240, 240, 255, 1)';
-      case .2:    return 'rgba(225, 225, 255, 1)';
-      case .15:   return 'rgba(210, 210, 255, 1)';
-      case .1:    return 'rgba(195, 195, 255, 1)';
-      case .05:   return 'rgba(180, 180, 255, 1)';
-      case .0:    return 'rgba(165, 165, 255, 1)';
-    }
-
-    return '200, 200, 200';
-  }
-
-  var heatColor = {
-    "1280" : "#ffffff",
-    "1270" : "#ffffcc",
-    "1260" : "#ffff88",
-    "1250" : "#ffff22",
-    "1240" : "#ffdd00",
-    "1235" : "#ffaa00",
-    "1230" : "#ff7700",
-    "1225" : "#ff4400"
-  }
-
-  var margin = { top: 20, right: 20, bottom: 30, left: 30 };
-  width = 640 - margin.left - margin.right,
-    height = 480 - margin.top - margin.bottom;
-
-  /*
-   var brush = d3.brush().extent([[0, 0], [width, height]]).on("end", brushended),
-   idleTimeout,
-   idleDelay = 350;
-   */
-  var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-  var clip = svg.append("defs").append("svg:clipPath")
-    .attr("id", "clip")
-    .append("svg:rect")
-    .attr("width", width )
-    .attr("height", height )
-    .attr("x", 0)
-    .attr("y", 0);
-
-
-  d3.json("api_output.json", function(error, data) {
-    update(data);
-  });
-
-  function update(data) {
-    /*************************************
-     * LOAD & PARSE JSON DATA
-     * ***********************************/
-    // Actual data is in the "data" array
-    data = data.data;
-
-    // Check JSON data for any recipes lacking information
-    // Map Si/Al to x/y
-    var index = data.length - 1;
-    while (index >= 0) {
-      if (isNaN(parseFloat(data[index].analysis.umf_analysis.SiO2))
-        || isNaN(parseFloat(data[index].analysis.umf_analysis.Al2O3))) {
-        console.log("JSON: No Si:Al for ID = " + data[index].id);
-        data.splice(index, 1);
-      }
-      else {
-        data[index].x = data[index].analysis.umf_analysis.SiO2;
-        data[index].y = data[index].analysis.umf_analysis.Al2O3;
-        data[index].pointcolor = getFillColor(data[index].analysis.umf_analysis.R2O_total);
-      }
-      index -= 1;
-    }
-
-    /*************************************
-     * Set up d3-tip for tooltips
-     * ***********************************/
-    var tip = d3.tip().attr('class', 'd3-tip')
-      .offset([-10, 0])
-      .html(function (d) {
-        var ortonCone = '';
-        if (d.from_orton_cone_name) {
-          if (d.to_orton_cond_name) {
-            ortonCone = "&Delta;" + d.from_orton_cone_name + "-" + d.to_orton_cone_name + " ";
-          }
-          else {
-            ortonCone = "&Delta;" + d.from_orton_cone_name + " ";
-          }
-        }
-        return ortonCone + d.name
-          + "<p>"
-          + Number(d.x).toFixed(2) + " SiO<sub>2</sub>, "
-          + Number(d.y).toFixed(2) + " Al<sub>2</sub>O<sub>3</sub>"
-          + "<br/><span style='color:red'>"
-          + Number(d.analysis.umf_analysis.SiO2_Al2O3_ratio).toFixed(2)
-          + "</span> SiO<sub>2</sub>:Al<sub>2</sub>O<sub>3</sub>"
-          + "<br/><span style='color:yellow'>"
-          + Number(d.analysis.umf_analysis.R2O_total).toFixed(1) + ":"
-          + Number(d.analysis.umf_analysis.RO_total).toFixed(1) + "</span> R2O:RO"
-          + "</p>";
-      });
-
-    svg.call(tip);
-
-    /*************************************
-     * Chart Scale & Axes
-     * ***********************************/
-    var x = d3.scaleLinear().range([0, width]).nice();
-    var y = d3.scaleLinear().range([height, 0]);
-
-    var xExtent = d3.extent(data, function (d) { return d.x; });
-    var yExtent = d3.extent(data, function (d) { return d.y; });
-    x.domain(d3.extent(data, function (d) { return d.x; })).nice();
-    y.domain(d3.extent(data, function (d) { return d.y; })).nice();
-
-    var scatter = svg.append("g")
-      .attr("id", "scatterplot")
-      .attr("clip-path", "url(#clip)");
-
-    // Axes
-    var xAxis = d3.axisBottom(x)
-      .ticks(20);
-    var yAxis = d3.axisLeft(y)
-      .ticks(20 * height / width);
-
-    var xgridlines = d3.axisBottom()
-      .tickFormat("")
-      .tickSize(-height)
-      .ticks(20)
-      .scale(x);
-
-    var ygridlines = d3.axisLeft()
-      .tickFormat("")
-      .tickSize(-width)
-      .ticks(20 * height / width)
-      .scale(y);
-
-    // x axis
-    svg.append("g")
-      .attr("class", "x axis")
-      .attr('id', "axis--x")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xgridlines);
-
-    svg.append("g")
-      .attr("class", "x axis")
-      .attr('id', "axis--x")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-    svg.append("text")
-      .style("text-anchor", "end")
-      .attr("class", "axis-names")
-      .attr("dx", "-.5em")
-      .attr("x", width)
-      .attr("y", height - 8)
-      .text("SiO₂");
-
-    // y axis
-    svg.append("g")
-      .attr("class", "y axis")
-      .attr('id', "axis--y")
-      .call(ygridlines);
-
-    svg.append("g")
-      .attr("class", "y axis")
-      .attr('id', "axis--y")
-      .call(yAxis);
-
-    svg.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("class", "axis-names")
-      .attr("dy", "1em")
-      .attr("dx", "-.5em")
-      .style("text-anchor", "end")
-      .text("Al₂O₃");
-
-    svg.append("text")
-      .attr("x", function(d) { return x(1.8); })
-      .attr("y", function(d) { return y(.15); })
-      .attr("class", "stull-region-names")
-      .attr("opacity", 0.6)
-      .text("CRAZED");
-
-    svg.append("text")
-      .attr("x", function(d) { return x(1.8); })
-      .attr("y", function(d) { return y(.15); })
-      .attr("class", "stull-region-names")
-      .attr("opacity", 0.6)
-      .text("CRAZED");
-
-    svg.append("text")
-      .attr("x", function(d) { return x(4.05); })
-      .attr("y", function(d) { return y(.96); })
-      .attr("class", "stull-region-names")
-      .attr("opacity", 0.6)
-      .text("SEMI-MATTE");
-
-    svg.append("text")
-      .attr("x", function(d) { return x(3.1); })
-      .attr("y", function(d) { return y(.96); })
-      .attr("class", "stull-region-names")
-      .attr("opacity", 0.6)
-      .text("MATTE");
-
-    svg.append("text")
-      .attr("x", function(d) { return x(1.85); })
-      .attr("y", function(d) { return y(.96); })
-      .attr("class", "stull-region-names")
-      .attr("opacity", 0.6)
-      .text("UNFUSED");
-
-    svg.append("text")
-      .attr("x", function(d) { return x(4.3); })
-      .attr("y", function(d) { return y(.21); })
-      .attr("class", "stull-region-names")
-      .attr("opacity", 0.6)
-      .text("UNDERFIRED");
-
-    svg.append("text")
-      .attr("x", function(d) { return x(3.4); })
-      .attr("y", function(d) { return y(.6); })
-      .attr("class", "stull-temp-names")
-      .attr("opacity", 0.6)
-      .text("1225");
-
-    svg.append("text")
-      .attr("x", function(d) { return x(4.0); })
-      .attr("y", function(d) { return y(.66); })
-      .attr("class", "stull-temp-names")
-      .attr("opacity", 0.6)
-      .text("1230");
-
-    svg.append("text")
-      .attr("x", function(d) { return x(4.5); })
-      .attr("y", function(d) { return y(.72); })
-      .attr("class", "stull-temp-names")
-      .attr("opacity", 0.6)
-      .text("1235");
-
-    svg.append("text")
-      .attr("x", function(d) { return x(4.9); })
-      .attr("y", function(d) { return y(.755); })
-      .attr("class", "stull-temp-names")
-      .attr("opacity", 0.6)
-      .text("1240");
-
-    svg.append("text")
-      .attr("x", function(d) { return x(5.0); })
-      .attr("y", function(d) { return y(.43); })
-      .attr("class", "stull-temp-names")
-      .attr("opacity", 0.6)
-      .text("1250");
-
-    /*************************************
-     * Heat map contours
-     * ***********************************/
-    var c1280 = d3.path();
-    c1280.moveTo(x(1.8), y(.4));
-    c1280.lineTo(x(1.8), y(.85));
-    c1280.lineTo(x(6.6), y(.85));
-    c1280.lineTo(x(6.6), y(.4));
-
-    var c1270 = d3.path();
-    c1270.moveTo(x(1.8), y(.68));
-    c1270.lineTo(x(2), y(.69));
-    c1270.lineTo(x(2.05), y(.8));
-    c1270.lineTo(x(2.12), y(.85));
-    c1270.lineTo(x(6.6), y(.85));
-    c1270.lineTo(x(6.6), y(.455));
-    c1270.lineTo(x(6.35), y(.43));
-    c1270.lineTo(x(5.8), y(.4));
-    c1270.lineTo(x(1.8), y(.4));
-
-    var c1260 = d3.path();
-    c1260.moveTo(x(1.8), y(.642));
-    c1260.lineTo(x(2.05), y(.66));
-    c1260.lineTo(x(2.18), y(.8));
-    c1260.lineTo(x(2.28), y(.85));
-    c1260.lineTo(x(5.55), y(.85));
-    c1260.lineTo(x(6.1), y(.83));
-    c1260.lineTo(x(6.6), y(.83));
-    c1260.lineTo(x(6.6), y(.483));
-    c1260.lineTo(x(6.2), y(.46));
-    c1260.lineTo(x(5.75), y(.45));
-    c1260.lineTo(x(5.4), y(.422));
-    c1260.lineTo(x(5.05), y(.4));
-    c1260.lineTo(x(1.8), y(.4));
-
-    var c1250 = d3.path();
-    c1250.moveTo(x(1.8), y(.63));
-    c1250.lineTo(x(2.25), y(.66));
-    c1250.lineTo(x(2.4), y(.76));
-    c1250.lineTo(x(2.35), y(.81));
-    c1250.lineTo(x(2.43), y(.85));
-    c1250.lineTo(x(4.3), y(.85));
-    c1250.lineTo(x(4.6), y(.84));
-    c1250.lineTo(x(5.0), y(.86));
-    c1250.lineTo(x(5.55), y(.82));
-    c1250.lineTo(x(6.1), y(.8));
-    c1250.lineTo(x(6.6), y(.79));
-    c1250.lineTo(x(6.6), y(.58));
-    c1250.lineTo(x(6.2), y(.55));
-    c1250.lineTo(x(5.65), y(.49));
-    c1250.lineTo(x(5.4), y(.48));
-    c1250.lineTo(x(5.05), y(.47));
-    c1250.lineTo(x(4.35), y(.4));
-    c1250.lineTo(x(1.8), y(.4));
-
-    var c1240 = d3.path();
-    c1240.moveTo(x(2.7), y(.85));
-    c1240.lineTo(x(2.65), y(.8));
-    c1240.lineTo(x(2.71), y(.765));
-    c1240.lineTo(x(2.6), y(.72));
-    c1240.lineTo(x(2.45), y(.655));
-    c1240.lineTo(x(2), y(.618));
-    c1240.lineTo(x(1.8), y(.58));
-    c1240.lineTo(x(1.8), y(.5799));
-    c1240.lineTo(x(1.8), y(.4));
-    c1240.lineTo(x(2), y(.4));
-    c1240.lineTo(x(2.5), y(.4));
-    c1240.lineTo(x(3), y(.4));
-    c1240.lineTo(x(3.55), y(.424));
-    c1240.lineTo(x(4.2), y(.438));
-    c1240.lineTo(x(4.6), y(.475));
-    c1240.lineTo(x(4.9), y(.505));
-    c1240.lineTo(x(4.96), y(.545));
-    c1240.lineTo(x(5.4), y(.572));
-    c1240.lineTo(x(6.0), y(.62));
-    c1240.lineTo(x(6.2), y(.67));
-    c1240.lineTo(x(6.1), y(.72));
-    c1240.lineTo(x(5.55), y(.77));
-    c1240.lineTo(x(5.38), y(.776));
-    c1240.lineTo(x(5.05), y(.77));
-    c1240.lineTo(x(4.8), y(.79));
-    c1240.lineTo(x(4.42), y(.821));
-    c1240.lineTo(x(4.1), y(.84));
-    c1240.lineTo(x(3.9), y(.85));
-    c1240.lineTo(x(2.7), y(.85));
-
-    var c1235 = [
-      {"x": 2.9, "y": .85},
-      {"x": 2.75, "y": .81},
-      {"x": 2.88, "y": .765},
-      {"x": 2.7, "y": .7},
-      {"x": 2.55, "y": .65},
-      {"x": 2.1, "y": .61},
-      {"x": 1.81, "y": .55},
-      {"x": 2, "y": .465},
-      {"x": 1.85, "y": .405},
-      {"x": 2.1, "y": .365},
-      {"x": 2.65, "y": .4},
-      {"x": 2.9, "y": .419},
-      {"x": 3.2, "y": .426},
-      {"x": 3.6, "y": .445},
-      {"x": 4.5, "y": .48},
-      {"x": 4.7, "y": .5},
-      {"x": 4.8, "y": .56},
-      {"x": 5.4, "y": .59},
-      {"x": 5.95, "y": .64},
-      {"x": 6, "y": .7},
-      {"x": 5.45, "y": .668},
-      {"x": 5.32, "y": .685},
-      {"x": 5.24, "y": .7},
-      {"x": 5.5, "y": .743},
-      {"x": 4.95, "y": .752},
-      {"x": 4.4, "y": .8},
-      {"x": 3.95, "y": .78},
-      {"x": 3.49, "y": .85},
-      {"x": 3.18, "y": .87}
-    ];
-
-    var c1230 = [
-      {"x": 3.48, "y": .76},
-      {"x": 3.45, "y": .748},
-      {"x": 3.1, "y": .731},
-      {"x": 2.95, "y": .72},
-      {"x": 2.85, "y": .655},
-      {"x": 2.3, "y": .605},
-      {"x": 2, "y": .555},
-      {"x": 2.18, "y": .518},
-      {"x": 2.45, "y": .455},
-      {"x": 2.95, "y": .448},
-      {"x": 3.7, "y": .491},
-      {"x": 3.9, "y": .49},
-      {"x": 4.38, "y": .498},
-      {"x": 4.56, "y": .575},
-      {"x": 5.1, "y": .635},
-      {"x": 4.4, "y": .692},
-      {"x": 3.9, "y": .687},
-      {"x": 3.8, "y": .7},
-      {"x": 4.04, "y": .74},
-      {"x": 3.5, "y": .8},
-      {"x": 3.1, "y": .847},
-      {"x": 2.95, "y": .81},
-      {"x": 3.17, "y": .77},
-      {"x": 3.48, "y": .76}
-    ];
-
-    var c1225 = [
-      {"x": 3.6, "y": .65},
-      {"x": 3.0, "y": .642},
-      {"x": 2.82, "y": .63},
-      {"x": 2.5, "y": .60},
-      {"x": 2.46, "y": .58},
-      {"x": 2.48, "y": .554},
-      {"x": 2.6, "y": .548},
-      {"x": 2.8, "y": .55},
-      {"x": 3.0, "y": .5},
-      {"x": 3.45, "y": .566},
-      {"x": 3.7, "y": .562},
-      {"x": 4.2, "y": .575},
-      {"x": 4.45, "y": .60},
-      {"x": 4.5, "y": .645},
-      {"x": 4.0, "y": .655}
-    ];
-
-    var contourLineFunction = d3.line()
-      .x(function (d) {
-        return x(d.x);
-      })
-      .y(function (d) {
-        return y(d.y);
-      })
-      .curve(d3.curveCardinal);
-
-    var contourClosedLineFunction = d3.line()
-      .x(function (d) {
-        return x(d.x);
-      })
-      .y(function (d) {
-        return y(d.y);
-      })
-      .curve(d3.curveCardinalClosed);
-
-    scatter.selectAll("contour")
-      .data([c1280])
-      .enter().append("path")
-      .attr("opacity", 1)
-      .attr("d", c1280.toString())
-      .style("fill", heatColor["1280"]);
-
-    scatter.selectAll("contour")
-      .data([c1270])
-      .enter().append("path")
-      .attr("opacity", 1)
-      .attr("d", c1270.toString())
-      .style("fill", heatColor["1270"]);
-
-    scatter.selectAll("contour")
-      .data([c1260])
-      .enter().append("path")
-      .attr("opacity", 1)
-      .attr("d", c1260.toString())
-      .style("fill", heatColor["1260"]);
-
-    scatter.selectAll("contour")
-      .data([c1250])
-      .enter().append("path")
-      .attr("opacity", 1)
-      .attr("d", c1250.toString())
-      .style("fill", heatColor["1250"]);
-
-    scatter.selectAll("contour")
-      .data([c1240])
-      .enter().append("path")
-      .attr("opacity", 1)
-      .attr("d", c1240.toString())
-      .style("fill", heatColor["1240"]);
-
-    scatter.selectAll("contour")
-      .data([c1235])
-      .enter().append("path")
-      .attr("d", contourClosedLineFunction(c1235))
-      .attr("opacity", 1)
-      .style("fill", heatColor["1235"])
-
-    scatter.selectAll("contour")
-      .data([c1230])
-      .enter().append("path")
-      .attr("d", contourClosedLineFunction(c1230))
-      .attr("opacity", 1)
-      .style("fill", heatColor["1230"])
-
-    scatter.selectAll("contour")
-      .data([c1225])
-      .enter().append("path")
-      .attr("d", contourClosedLineFunction(c1225))
-      .attr("opacity", 1)
-      .style("fill", heatColor["1225"])
-
-
-
-    /**************************************
-     * STULL REGIONS
-     **************************************/
-    var unfused = [
-      {"x": 0.6, "y": 0.42},
-      {"x": 0.6, "y": 1.0},
-      {"x": 2.8, "y": 1.0}
-    ];
-    scatter.selectAll("unfused")
-      .data([unfused])
-      .enter().append("polygon")
-      .attr("points", function (d) {
-        return d.map(function (d) {
-          return [x(d.x), y(d.y)].join(",");
-        }).join(" ");
-      })
-      .attr("opacity", 0.5)
-      .style("fill", "#6666ff");
-
-    var matte = [
-      {"x": 0.6, "y": 0.08},
-      {"x": 0.6, "y": 0.42},
-      {"x": 2.8, "y": 1.0},
-      {"x": 4.0, "y": 1.0}
-    ];
-    scatter.selectAll("matte")
-      .data([matte])
-      .enter().append("polygon")
-      .attr("points", function (d) {
-        return d.map(function (d) {
-          return [x(d.x), y(d.y)].join(",");
-        }).join(" ");
-      })
-      .attr("opacity", 0.5)
-      .style("fill", "#9999cc");
-
-    var semimatte = [
-      {"x": 1.2, "y": 0.242},
-      {"x": 4.0, "y": 1},
-      {"x": 5.0, "y": 1.0}
-    ];
-    scatter.selectAll("semimatte")
-      .data([semimatte])
-      .enter().append("polygon")
-      .attr("points", function (d) {
-        return d.map(function (d) {
-          return [x(d.x), y(d.y)].join(",");
-        }).join(" ");
-      })
-      .attr("opacity", 0.5)
-      .style("fill", "#ccccff");
-
-    var underfired = [
-      {"x": 2.4, "y": 0.08},
-      {"x": 7.2, "y": 0.65},
-      {"x": 7.2, "y": 0.08}
-    ];
-    scatter.selectAll("underfired")
-      .data([underfired])
-      .enter().append("polygon")
-      .attr("points", function (d) {
-        return d.map(function (d) {
-          return [x(d.x), y(d.y)].join(",");
-        }).join(" ");
-      })
-      .attr("opacity", 0.5)
-      .style("fill", "#6666ff");
-
-    var lineFunction = d3.line()
-      .x(function (d) {
-        return x(d.x);
-      })
-      .y(function (d) {
-        return y(d.y);
-      })
-      .curve(d3.curveCardinal);
-
-    var crazing = [
-      {"x": 0.6, "y": 0.08},
-      {"x": 0.6, "y": 1.0},
-      {
-        "x": 1.67, "y": 1.0
-      },
-      {"x": 2.1, "y": 0.50},
-      {"x": 2.38, "y": 0.25},
-      {"x": 2.7, "y": 0.23},
-      {"x": 3.3, "y": 0.25},
-      {"x": 3.9, "y": 0.28},
-      {"x": 4.2, "y": 0.29},
-      {"x": 5.4, "y": 0.49},
-      {"x": 7.2, "y": 0.615},
-      {"x": 7.2, "y": 0.08}
-    ];
-    scatter.selectAll("crazing").data([crazing])
-      .enter().append("polygon")
-      .attr("points", function (d) {
-        return d.map(function (d) {
-          return [x(d.x), y(d.y)].join(",");
-        }).join(" ");
-      })
-      .attr("opacity", 0.5)
-      .style("fill", "#cccccc");
-
-    var linearLineFunction = d3.line()
-      .x(function (d) {
-        return x(d.x);
-      })
-      .y(function (d) {
-
-        return y(d.y);
-      })
-      .curve(d3.curveLinear);
-
-    var
-      qline = [
-        {"x": 1.8, "y": 0.2},
-        {"x": 4.2, "y": 0.6},
-        {"x": 6.0, "y": 0.8},
-        {"x": 7.2, "y": 0.92}
-      ];
-    scatter.selectAll("qline")
-      .data([qline])
-      .enter().append("path")
-      .attr("d", linearLineFunction(qline))
-      .attr("opacity", 0.9)
-      .attr("fill", "none")
-      .style("stroke", "#000000")
-      .style("stroke-dasharray", ("3, 3"))
-      .style("stroke-width", 1);
-
-
-
-
-
-    /*************************************
-     * Recipe points
-     * ***********************************/
-    scatter.selectAll(".dot")
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("class", "dot")
-      .attr("r", 4)
-      .attr("cx", function (d) {
-        return x(d.x);
-      })
-      .attr("cy", function (d) {
-        return y(d.y);
-      })
-      .attr("opacity", 1)
-      .style("fill", function (d) {
-        return (d.pointcolor);
-      })
-      .attr("stroke-width", 1)
-      .attr("stroke", "rgba(0, 0, 0, 0.5)")
-      //      .style("fill", "#ff0000")
-      .on('mouseover', tip.show)
-      .on('mouseout', tip.hide);
-
-
-
-      /*
-       svg.append("g")
-       .attr("class", "x axis")
-       .attr("transform", "translate(0," + height + ")")
-       .call(xAxis)
-
-       svg.append("g")
-       .attr("class", "y axis")
-       .call(yAxis)
-
-
-       svg.append("text")
-       .attr("transform", "rotate(-90)")
-       .attr("y", 6)
-       .attr("dy", "1em")
-       .style("text-anchor", "end")
-       .text("SiO₂");
-       */
-      /*
-       scatter.append("g")
-       .attr("class", "brush")
-       .call(brush);
-
-       function brushended() {
-
-       var s = d3.event.selection;
-       if (!s) {
-       if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
-       x.domain(d3.extent(data, function (d) { return d.analysis.umf_analysis.SiO2; })).nice();
-       y.domain(d3.extent(data, function (d) { return d.analysis.umf_analysis.Al2O3; })).nice();
-       } else {
-
-       x.domain([s[0][0], s[1][0]].map(x.invert, x));
-       y.domain([s[1][1], s[0][1]].map(y.invert, y));
-       scatter.select(".brush").call(brush.move, null);
-       }
-       zoom();
-       }
-
-       function idled() {
-       idleTimeout = null;
-       }
-
-       function zoom() {
-
-       var t = scatter.transition().duration(750);
-       svg.select("#axis--x").transition(t).call(xAxis);
-       svg.select("#axis--y").transition(t).call(yAxis);
-       scatter.selectAll("circle").transition(t)
-       .attr("cx", function (d) { return x(d.analysis.umf_analysis.SiO2); })
-       .attr("cy", function (d) { return y(d.analysis.umf_analysis.Al2O3); });
-       scatter.selectAll("polygon").transition(t)
-       .attr("points", function(d) {
-       return d.map(function(d) {
-       return [x(d.analysis.umf_analysis.SiO2),y(d.analysis.umf_analysis.Al2O3)].join(",");
-       }).join(" ");
-       });
-       }
-       */
-  }
-</script>
 </body>
