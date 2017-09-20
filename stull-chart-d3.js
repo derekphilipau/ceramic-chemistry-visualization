@@ -157,7 +157,7 @@ d3.json("api_output.json", function(error, data) {
   /*************************************
    * Heat map contours
    * ***********************************/
-  /*
+
   var c1280 = d3.path();
   c1280.moveTo(x(1.8), y(.4));
   c1280.lineTo(x(1.8), y(.85));
@@ -307,7 +307,7 @@ d3.json("api_output.json", function(error, data) {
    .style("fill", heatColor["1225"])
 
   */
-
+/*
   var c1280 = [
     {"x": 1.8, "y": .4},
     {"x": 1.8, "y": .85},
@@ -395,7 +395,7 @@ d3.json("api_output.json", function(error, data) {
     {"x": 3.9, "y": .85},
     {"x": 2.7, "y": .85}
   ]
-
+*/
   var c1235 = [
     {"x": 2.9, "y": .85},
     {"x": 2.75, "y": .81},
@@ -490,7 +490,7 @@ d3.json("api_output.json", function(error, data) {
       return y(d.y);
     })
     .curve(d3.curveCardinalClosed);
-
+/*
   scatter.selectAll("contour")
     .data([c1280])
     .enter().append("polygon")
@@ -545,7 +545,29 @@ d3.json("api_output.json", function(error, data) {
     })
     .attr("opacity", 1)
     .style("fill", heatColor["1240"]);
+*/
 
+  scatter.selectAll("contour")
+    .data([c1235])
+    .enter().append("path")
+    .attr("d", contourClosedLineFunction(c1235))
+    .attr("opacity", 1)
+    .style("fill", heatColor["1235"])
+
+  scatter.selectAll("contour")
+    .data([c1230])
+    .enter().append("path")
+    .attr("d", contourClosedLineFunction(c1230))
+    .attr("opacity", 1)
+    .style("fill", heatColor["1230"])
+
+  scatter.selectAll("contour")
+    .data([c1225])
+    .enter().append("path")
+    .attr("d", contourClosedLineFunction(c1225))
+    .attr("opacity", 1)
+    .style("fill", heatColor["1225"])
+/*
   scatter.selectAll("contour")
     .data([c1235])
     .enter().append("polygon")
@@ -578,7 +600,7 @@ d3.json("api_output.json", function(error, data) {
     })
     .attr("opacity", 1)
     .style("fill", heatColor["1225"]);
-
+*/
   scatter.append("text")
     .attr("x", function(d) { return x(3.4); })
     .attr("y", function(d) { return y(.6); })
