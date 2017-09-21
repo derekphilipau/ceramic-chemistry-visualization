@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta property="og:image" content="img/STULL_Chart_EXACT.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://derekphilipau.github.io/Javascript-Stull-Charts/" />
+    <meta property="og:title" content="Javascript Stull Charts" />
+    <meta property="og:description" content="Implementations of a SiO2:Al2O3 Stull Chart using various Javascript libraries." />
+
+    <title>UMF Notation</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:100,300,400" rel="stylesheet">
+
+    <style>
+        body {
+            padding-top: 2rem;
+        }
+
+        .active-link {
+            font-weight: bold;
+        }
+
+        h2 {
+            margin-top: 4rem;
+        }
+
+        /* Traditional UMF Notation Styles */
+        .umf-traditional {
+            font-family: "Roboto Mono", Courier;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .umf-bracket-2 {
+            font-weight: 200;
+            font-size: 3rem;
+        }
+        .umf-bracket-3 {
+            font-weight: 200;
+            font-size: 4rem;
+        }
+        .umf-bracket-4 {
+            font-weight: 100;
+            font-size: 6rem;
+            line-height: 6rem;
+        }
+
+
+
+
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>UMF Notation</h1>
+    <p class="lead">Notation and visualization of the Unity Molecular Formula (UMF)</p>
+    <hr/>
+    <h5><a href="https://github.com/derekphilipau/Javascript-Stull-Charts">View on Github</a></h5>
+
+    <h2>Traditional Notation</h2>
+    <hr/>
+
+    While there are a number of more complicated ways to display brackets & chemical formulas
+    (such as Mathematical Markup Language (MathML)), here we just use normal fonts with CSS styling.
+
+    <div class="row">
+        <div class="col-sm-6">
+            <table class="umf-traditional">
+                <tbody>
+                <tr>
+                    <td>
+                        0.4 K<sub>2</sub>O
+                        <br/>
+                        0.4 ZnO
+                        <br/>
+                        0.2 CaO
+                    </td>
+                    <td>
+                        <span class="umf-bracket-3">}</span>
+                    </td>
+                    <td>
+                        0.55 Al<sub>2</sub>O<sub>3</sub>, 3.3 SiO<sub>2</sub>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="umf-traditional">
+                <tbody>
+                <tr>
+                    <td>
+                        0.15 K<sub>2</sub>O
+                        <br/>
+                        0.15 Na<sub>2</sub>O
+                        <br/>
+                        0.4 CaO
+                        <br/>
+                        0.3 PbO
+                    </td>
+                    <td>
+                        <span class="umf-bracket-4">}</span>
+                    </td>
+                    <td>
+                        0.2 Al<sub>2</sub>O<sub>3</sub>
+                    </td>
+                    <td>
+                        <span class="umf-bracket-2">{</span>
+                    </td>
+                    <td>
+                        1.49 B<sub>2</sub>O<sub>3</sub>
+                        <br/>
+                        2.97 SiO<sub>2</sub>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="umf-traditional">
+                <tbody>
+                <tr>
+                    <td>
+                        K<sub>2</sub>O
+                        <br/>
+                        Na<sub>2</sub>O
+                        <br/>
+                        CaO
+                        <br/>
+                        CoO
+                    </td>
+                    <td>
+                        0.15-0.75
+                        <br/>
+                        0.&nbsp;&nbsp;-0.6
+                        <br/>
+                        0.14-0.64
+                        <br/>
+                        0&nbsp;&nbsp;&nbsp;-0.06
+                    </td>
+                    <td>
+                        <span class="umf-bracket-4">}</span>
+                    </td>
+                    <td>
+                        Al<sub>2</sub>O<sub>3</sub>
+                    </td>
+                    <td>
+                        0.1-0.5
+                    </td>
+                    <td>
+                        <span class="umf-bracket-2">{</span>
+                    </td>
+                    <td>
+                        SiO<sub>2</sub>
+                        <br/>
+                        B<sub>2</sub>O<sub>3</sub>
+                    </td>
+                    <td>
+                        1.1-1.7
+                        <br/>
+                        0.2-0.5
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="umf-traditional">
+                <tbody>
+                <tr>
+                    <td>
+                        0.3 K<sub>2</sub>O
+                        <br/>
+                        0.7 CaO
+                    </td>
+                    <td>
+                        <span class="umf-bracket-2">}</span>
+                    </td>
+                    <td>
+                        0.3 to 1.0 Al<sub>2</sub>O<sub>3</sub>
+                    </td>
+                    <td>
+                        <span class="umf-bracket-2">}</span>
+                    </td>
+                    <td>
+                        1.8 to 7.2 SiO<sub>2</sub>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="umf-traditional">
+                <tbody>
+                <tr>
+                    <td>
+                        <span class="umf-bracket-2">{</span>
+                    </td>
+                    <td>
+                        0.3 K<sub>2</sub>O
+                        <br/>
+                        0.7 CaO
+                    </td>
+                    <td>
+                        <span class="umf-bracket-2">}</span>
+                    </td>
+                    <td>
+                        0.7 Al<sub>2</sub>O<sub>3</sub>
+                        4.2 SiO<sub>2</sub>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-6">
+            <img class="img-fluid" src="img/umf_1.png"/>
+            <br/>
+            <img class="img-fluid" src="img/stull_umf1.png"/>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+</body>
+</html>
+
+
+
