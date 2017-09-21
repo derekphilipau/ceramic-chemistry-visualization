@@ -1,11 +1,8 @@
-# Javascript Stull Charts
+# Ceramic Chemistry Visualization
 
-A repository for implementations of a SiO2:Al2O3 Stull Chart
+Various types of web visualizations for ceramics.
 
 ## Website
 
-https://derekphilipau.github.io/Javascript-Stull-Charts/
+https://derekphilipau.github.io/ceramic-chemistry-visualization/
 
-## Chart.js
-
-Stull Chart using https://github.com/chartjs/Chart.js
