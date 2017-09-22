@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta property="og:image" content="img/STULL_Chart_EXACT.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://derekphilipau.github.io/Javascript-Stull-Charts/" />
+    <meta property="og:title" content="Javascript Stull Charts" />
+    <meta property="og:description" content="Implementations of a SiO2:Al2O3 Stull Chart using various Javascript libraries." />
+
+    <title>UMF Notation</title>
+
+    <!--    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js" type="text/javascript"></script>
+    <script src="./d3-waffle.js" type="text/javascript"></script>
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.js"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:100,300,400" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	<style>
+        body {
+            padding-top: 2rem;
+        }
+
+        .active-link {
+            font-weight: bold;
+        }
+
+        h2 {
+            margin-top: 4rem;
+        }
+
+        /* Traditional UMF Notation Styles */
+        .umf-traditional {
+            font-family: "Roboto Mono", Courier;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .umf-traditional td {
+            white-space: nowrap!important;
+        }
+        .umf-bracket-2 {
+            font-weight: 200;
+            font-size: 3rem;
+            display: inline-block;
+            margin-top: -.25rem;
+        }
+        .umf-bracket-3 {
+            font-weight: 200;
+            font-size: 4rem;
+            display: inline-block;
+            margin-top: -.5rem;
+        }
+        .umf-bracket-4 {
+            font-weight: 100;
+            font-size: 5.5rem;
+            line-height: 5.5rem;
+            display: inline-block;
+            margin-top: -1rem;
+        }
+
+        .rhodes td {
+            padding-left: .5rem;
+            padding-right: .5rem;
+        }
+
+        /* Chart.js Pie */
+        .pie {
+            white-space: nowrap;
+        }
+        .pie table tr td {
+            padding-top: 1em;
+        }
+        .chartjs {
+//            width: 100px !important;
+        }
+        .pie .recipe-name {
+            width: 140px !important;
+        }
+
+
+        /* d3 Waffle */
+		.waffle {
+            white-space: nowrap;
+            width: 840px !important;
+		}
+        .waffle .recipe-name {
+            width: 140px !important;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>UMF Notation</h1>
+    <p class="lead">Notation and visualization of the Unity Molecular Formula (UMF)</p>
+    <hr/>
+    <h5><a href="https://github.com/derekphilipau/Javascript-Stull-Charts">View on Github</a></h5>
+
+    <h2>Traditional Notation</h2>
+    <hr/>
+
+    While there are a number of more complicated ways to display brackets & chemical formulas
+    (such as Mathematical Markup Language (MathML)), here we just use normal fonts with CSS styling.
+
+    <div class="row">
+        <div class="col-sm-7">
+            <table class="umf-traditional">
+                <tbody>
+                <tr>
+                    <td>
+                        0.4 K<sub>2</sub>O
+                        <br/>
+                        0.4 ZnO
+                        <br/>
+                        0.2 CaO
+                    </td>
+                    <td>
+                        <span class="umf-bracket-3">}</span>
+                    </td>
+                    <td>
+                        0.55 Al<sub>2</sub>O<sub>3</sub>, 3.3 SiO<sub>2</sub>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="umf-traditional">
+                <tbody>
+                <tr>
+                    <td>
+                        0.15 K<sub>2</sub>O
+                        <br/>
+                        0.15 Na<sub>2</sub>O
+                        <br/>
+                        0.4 CaO
+                        <br/>
+                        0.3 PbO
+                    </td>
+                    <td>
+                        <span class="umf-bracket-4">}</span>
+                    </td>
+                    <td>
+                        0.2 Al<sub>2</sub>O<sub>3</sub>
+                    </td>
+                    <td>
+                        <span class="umf-bracket-2">{</span>
+                    </td>
+                    <td>
+                        1.49 B<sub>2</sub>O<sub>3</sub>
+                        <br/>
+                        2.97 SiO<sub>2</sub>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="umf-traditional">
+                <tbody>
+                <tr>
+                    <td>
+                        K<sub>2</sub>O
+                        <br/>
+                        Na<sub>2</sub>O
+                        <br/>
+                        CaO
+                        <br/>
+                        CoO
+                    </td>
+                    <td>
+                        0.15-0.75
+                        <br/>
+                        0.&nbsp;&nbsp;-0.6
+                        <br/>
+                        0.14-0.64
+                        <br/>
+                        0&nbsp;&nbsp;&nbsp;-0.06
+                    </td>
+                    <td>
+                        <span class="umf-bracket-4">}</span>
+                    </td>
+                    <td>
+                        Al<sub>2</sub>O<sub>3</sub>
+                    </td>
+                    <td>
+                        0.1-0.5
+                    </td>
+                    <td>
+                        <span class="umf-bracket-2">{</span>
+                    </td>
+                    <td>
+                        SiO<sub>2</sub>
+                        <br/>
+                        B<sub>2</sub>O<sub>3</sub>
+                    </td>
+                    <td>
+                        1.1-1.7
+                        <br/>
+                        0.2-0.5
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="umf-traditional">
+                <tbody>
+                <tr>
+                    <td>
+                        0.3 K<sub>2</sub>O
+                        <br/>
+                        0.7 CaO
+                    </td>
+                    <td>
+                        <span class="umf-bracket-2">}</span>
+                    </td>
+                    <td>
+                        0.3 to 1.0 Al<sub>2</sub>O<sub>3</sub>
+                    </td>
+                    <td>
+                        <span class="umf-bracket-2">}</span>
+                    </td>
+                    <td>
+                        1.8 to 7.2 SiO<sub>2</sub>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="umf-traditional">
+                <tbody>
+                <tr>
+                    <td>
+                        <span class="umf-bracket-2">{</span>
+                    </td>
+                    <td>
+                        0.3 K<sub>2</sub>O
+                        <br/>
+                        0.7 CaO
+                    </td>
+                    <td>
+                        <span class="umf-bracket-2">}</span>
+                    </td>
+                    <td>
+                        0.7 Al<sub>2</sub>O<sub>3</sub>
+                        4.2 SiO<sub>2</sub>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="umf-traditional rhodes">
+                <tbody>
+                <tr>
+                    <td>
+                        PbO
+                        <br/>
+                        CaO
+                        <br/>
+                        K<sub>2</sub>O
+                        <br/>
+                        MgO
+                    </td>
+                    <td>
+                        .5
+                        <br/>
+                        .2
+                        <br/>
+                        .2
+                        <br/>
+                        .1
+                    </td>
+                    <td>
+                        Al<sub>2</sub>O<sub>3</sub>
+                        <br/>
+                        B<sub>2</sub>O<sub>5</sub>
+                    </td>
+                    <td>
+                        .25
+                        <br/>
+                        .15
+                    </td>
+                    <td>
+                        SiO<sub>2</sub>
+                    </td>
+                    <td>
+                        2.8
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col-sm-5">
+            <p>
+                <img class="img-fluid" src="img/umf_1.png"/>
+            </p>
+            <p>
+                <img class="img-fluid" src="img/stull_umf1.png"/>
+            </p>
+        </div>
+    </div>
+
+    <h2>Pie Chart Notation</h2>
+    <hr/>
+    <p>
+        A pie chart series can be used to show UMF, with the unity being represented by a full circle.
+    </p>
+    <p>
+        Made using <a href="http://www.chartjs.org/">Chart.js</a>.  Scrollover with mouse for legends.
+    </p>
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="pie">
+                <table>
+                    <tr>
+                        <td class="recipe-name">
+                            <h5><a href="https://glazy.org/recipes/11202">Katz Zinc Pinc</a></h5>
+                        </td>
+                        <td>
+                            <canvas id="chartjs-1" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                        <td>
+                            <canvas id="chartjs-2" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                        <td>
+                            <canvas id="chartjs-3" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                        <td>
+                            <canvas id="chartjs-4" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                        <td>
+                            <canvas id="chartjs-5" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                        <td>
+                            <canvas id="chartjs-6" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="recipe-name">
+                            <h5>Variation</h5>
+                        </td>
+                        <td>
+                            <canvas id="bchartjs-1" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                        <td>
+                            <canvas id="bchartjs-2" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                        <td>
+                            <canvas id="bchartjs-3" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                        <td>
+                            <canvas id="bchartjs-4" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                        <td>
+                            <canvas id="bchartjs-5" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                        <td>
+                            <canvas id="bchartjs-6" class="chartjs" width="100" height="100"></canvas>
+                        </td>
+                    </tr>
+                </table>
+                <script>
+                  var options = {
+                    layout: {
+                      padding: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                      }
+                    },
+                    responsive: false,
+                    legend: {
+                      display: false
+                    },
+                    elements: {
+                      arc: {
+                        borderWidth: 1
+                      }
+                    }
+                  };
+
+                  new Chart(document.getElementById("chartjs-1"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["Na2O", "K2O", "ZnO", "CaO"],
+                      "datasets": [{
+                        "label": "RO R2O",
+                        "data": [19, 6, 73, 2],
+                        "backgroundColor": ["rgb(255, 100, 100)", "rgb(255, 155, 100)", "rgb(230, 230, 0)", "rgb(200, 200, 0)"]
+                      }]
+                    },
+                    options
+                  });
+
+                  new Chart(document.getElementById("chartjs-2"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["Al2O3", ""],
+                      "datasets": [{
+                        "label": "R2O3",
+                        "data": [38, 62],
+                        "backgroundColor": ["rgb(55, 255, 100)", "rgb(245, 245, 245)"]
+                      }]
+                    },
+                    options
+                  });
+
+                  new Chart(document.getElementById("chartjs-3"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["SiO2"],
+                      "datasets": [{
+                        "label": "RO2",
+                        "data": [100],
+                        "backgroundColor": ["rgb(100, 100, 255)"]
+                      }]
+                    },
+                    options
+                  });
+
+                  new Chart(document.getElementById("chartjs-4"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["SiO2"],
+                      "datasets": [{
+                        "label": "RO2",
+                        "data": [100],
+                        "backgroundColor": ["rgb(100, 100, 255)"]
+                      }]
+                    },
+                    options
+                  });
+
+                  new Chart(document.getElementById("chartjs-5"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["SiO2", ""],
+                      "datasets": [{
+                        "label": "RO2",
+                        "data": [88, 12],
+                        "backgroundColor": ["rgb(100, 100, 255)", "rgb(245, 245, 245)"]
+                      }]
+                    },
+                    options
+                  });
+
+                  new Chart(document.getElementById("chartjs-6"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["Cr2O3", ""],
+                      "datasets": [{
+                        "label": "Other",
+                        "data": [2, 98],
+                        "backgroundColor": ["rgb(00, 155, 55)", "rgb(245, 245, 245)"]
+                      }]
+                    },
+                    options
+                  });
+
+
+                  /* Variation */
+
+                  new Chart(document.getElementById("bchartjs-1"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["Na2O", "K2O", "ZnO", "CaO"],
+                      "datasets": [{
+                        "label": "RO R2O",
+                        "data": [22, 3, 70, 5],
+                        "backgroundColor": ["rgb(255, 100, 100)", "rgb(255, 155, 100)", "rgb(230, 230, 0)", "rgb(200, 200, 0)"]
+                      }]
+                    },
+                    options
+                  });
+
+                  new Chart(document.getElementById("bchartjs-2"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["Al2O3", ""],
+                      "datasets": [{
+                        "label": "R2O3",
+                        "data": [32, 68],
+                        "backgroundColor": ["rgb(55, 255, 100)", "rgb(245, 245, 245)"]
+                      }]
+                    },
+                    options
+                  });
+
+                  new Chart(document.getElementById("bchartjs-3"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["SiO2"],
+                      "datasets": [{
+                        "label": "RO2",
+                        "data": [100],
+                        "backgroundColor": ["rgb(100, 100, 255)"]
+                      }]
+                    },
+                    options
+                  });
+
+                  new Chart(document.getElementById("bchartjs-4"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["SiO2"],
+                      "datasets": [{
+                        "label": "RO2",
+                        "data": [100],
+                        "backgroundColor": ["rgb(100, 100, 255)"]
+                      }]
+                    },
+                    options
+                  });
+
+                  new Chart(document.getElementById("bchartjs-5"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["SiO2", ""],
+                      "datasets": [{
+                        "label": "RO2",
+                        "data": [74, 26],
+                        "backgroundColor": ["rgb(100, 100, 255)", "rgb(245, 245, 245)"]
+                      }]
+                    },
+                    options
+                  });
+
+                  new Chart(document.getElementById("bchartjs-6"), {
+                    "type": "pie",
+                    "data": {
+                      "labels": ["Cr2O3", ""],
+                      "datasets": [{
+                        "label": "Other",
+                        "data": [2, 98],
+                        "backgroundColor": ["rgb(00, 155, 55)", "rgb(245, 245, 245)"]
+                      }]
+                    },
+                    options
+                  });
+
+                </script>
+            </div>
+
+        </div>
+    </div>
+
+	<h2>Waffle Notation</h2>
+	<hr/>
+    <p>
+        Waffle charts are similar to pie charts.
+        The following waffle chart series shows unity as a single 10x10 grid,
+        with each grid point representing .01
+    </p>
+    <p>
+        Made using <a href="https://github.com/jbkunst/d3-waffle">d3-waffle</a>
+        Scrollover with mouse to see oxide names
+    </p>
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="waffle">
+                <table>
+                    <tr>
+                        <td class="recipe-name">
+                            <h5><a href="https://glazy.org/recipes/11202">Katz Zinc Pinc</a></h5>
+                        </td>
+                        <td>
+                            <div id="waffle1"></div>
+                        </td>
+                        <td>
+                            <div id="waffle2"></div>
+                        </td>
+                        <td>
+                            <div id="waffle3"></div>
+                        </td>
+                        <td>
+                            <div id="waffle4"></div>
+                        </td>
+                        <td>
+                            <div id="waffle5"></div>
+                        </td>
+                        <td>
+                            <div id="waffle6"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="waffle">
+                <table>
+                    <tr>
+                        <td class="recipe-name">
+                            <h5>Variation</h5>
+                        </td>
+                        <td>
+                            <div id="bwaffle1"></div>
+                        </td>
+                        <td>
+                            <div id="bwaffle2"></div>
+                        </td>
+                        <td>
+                            <div id="bwaffle3"></div>
+                        </td>
+                        <td>
+                            <div id="bwaffle4"></div>
+                        </td>
+                        <td>
+                            <div id="bwaffle5"></div>
+                        </td>
+                        <td>
+                            <div id="bwaffle6"></div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+    <h2>Mini Notation (ala Sparklines)</h2>
+    <hr/>
+    <p>
+        <a href="https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR"><em>Sparklines</em></a>
+        are small line charts that can be easily read at a glance.
+        The below drafts show UMF being displayed as compactly as possible, with RO & R2O grouped.
+    </p>
+    <p>
+        Made using <a href="https://github.com/jbkunst/d3-waffle">d3-waffle</a>
+    </p>
+
+    <div class="row">
+		<div class="col-sm-8">
+			<img class="img-fluid" src="img/umf_compare2.png"/>
+		</div>
+        <div class="col-sm-4">
+
+        </div>
+	</div>
+
+	<script type="text/javascript">
+      $(function() {
+
+        var ro_r2o = [
+          { "name": "Na2O", "value": 19},
+          { "name": "K2O", "value": 6},
+          { "name": "ZnO", "value": 73},
+          { "name": "CaO", "value": 2}
+        ];
+
+        var r2o3 = [
+          { "name": "Al2O3", "value": 38},
+          { "name": "none", "value": 62}
+        ];
+
+        var ro2_1 = [
+          { "name": "SiO2", "value": 100},
+        ];
+        var ro2_2 = [
+          { "name": "SiO2", "value": 100},
+        ];
+        var ro2_3 = [
+          { "name": "SiO2", "value": 88},
+          { "name": "none", "value": 12},
+        ];
+        var other = [
+          { "name": "Cr2O3", "value": 2},
+          { "name": "none", "value": 98},
+        ];
+
+
+        var domain = ro_r2o.map(function(d){ return slugify(d.name); });
+        var range = ["#ff7777", "#ff0000", "#dddd00", "#ff9900"];
+        var palette = d3.scale.ordinal().domain(domain).range(range);
+
+        var chart1 = d3waffle()
+          .rows(10)
+          .scale(1)
+          .adjust(1.4)
+          .colorscale(palette)
+          .height(120);
+
+        d3.select("#waffle1")
+          .datum(ro_r2o)
+          .call(chart1);
+
+        var domain = r2o3.map(function(d){ return slugify(d.name); });
+        var range = ["#33ee55", "#eeeeee"];
+        var palette = d3.scale.ordinal().domain(domain).range(range);
+
+        var chart2 = d3waffle()
+          .rows(10)
+          .scale(1)
+          .adjust(1.4)
+          .colorscale(palette)
+          .height(120);
+
+        var domain = ro2_1.map(function(d){ return slugify(d.name); });
+        var range = ["#9999ff", "#eeeeee"];
+        var palette = d3.scale.ordinal().domain(domain).range(range);
+
+        d3.select("#waffle2")
+          .datum(r2o3)
+          .call(chart2);
+
+        var chart3 = d3waffle()
+          .rows(10)
+          .scale(1)
+          .adjust(1.4)
+          .colorscale(palette)
+          .height(120);
+
+        d3.select("#waffle3")
+          .datum(ro2_1)
+          .call(chart3);
+
+        d3.select("#waffle4")
+          .datum(ro2_2)
+          .call(chart3);
+
+        d3.select("#waffle5")
+          .datum(ro2_3)
+          .call(chart3);
+
+        var domain = r2o3.map(function(d){ return slugify(d.name); });
+        var range = ["#007733", "#eeeeee"];
+        var palette = d3.scale.ordinal().domain(domain).range(range);
+
+        var chart4 = d3waffle()
+          .rows(10)
+          .scale(1)
+          .adjust(1.4)
+          .colorscale(palette)
+          .height(120);
+
+        d3.select("#waffle6")
+          .datum(other)
+          .call(chart4);
+
+
+
+        /* VARIATION */
+        var ro_r2o = [
+          { "name": "Na2O", "value": 16},
+          { "name": "K2O", "value": 9},
+          { "name": "ZnO", "value": 63},
+          { "name": "CaO", "value": 12}
+        ];
+
+        var r2o3 = [
+          { "name": "Al2O3", "value": 42},
+          { "name": "none", "value": 58}
+        ];
+
+        var ro2_1 = [
+          { "name": "SiO2", "value": 100},
+        ];
+        var ro2_2 = [
+          { "name": "SiO2", "value": 100},
+        ];
+        var ro2_3 = [
+          { "name": "SiO2", "value": 64},
+          { "name": "none", "value": 36},
+        ];
+        var other = [
+          { "name": "Cr2O3", "value": 2},
+          { "name": "none", "value": 98},
+        ];
+
+
+        var domain = ro_r2o.map(function(d){ return slugify(d.name); })
+        var range = ["#ff7777", "#ff0000", "#dddd00", "#ff9900"]
+        var palette = d3.scale.ordinal().domain(domain).range(range);
+
+        var chart1 = d3waffle()
+          .rows(10)
+          .scale(1)
+          .adjust(1.4)
+          .colorscale(palette)
+          .height(120);
+
+        d3.select("#bwaffle1")
+          .datum(ro_r2o)
+          .call(chart1);
+
+        var domain = r2o3.map(function(d){ return slugify(d.name); })
+        var range = ["#33ee55", "#eeeeee"]
+        var palette = d3.scale.ordinal().domain(domain).range(range);
+
+        var chart2 = d3waffle()
+          .rows(10)
+          .scale(1)
+          .adjust(1.4)
+          .colorscale(palette)
+          .height(120);
+
+        var domain = ro2_1.map(function(d){ return slugify(d.name); })
+        var range = ["#9999ff", "#eeeeee"]
+        var palette = d3.scale.ordinal().domain(domain).range(range);
+
+        d3.select("#bwaffle2")
+          .datum(r2o3)
+          .call(chart2);
+
+        var chart3 = d3waffle()
+          .rows(10)
+          .scale(1)
+          .adjust(1.4)
+          .colorscale(palette)
+          .height(120);
+
+        d3.select("#bwaffle3")
+          .datum(ro2_1)
+          .call(chart3);
+
+        d3.select("#bwaffle4")
+          .datum(ro2_2)
+          .call(chart3);
+
+        d3.select("#bwaffle5")
+          .datum(ro2_3)
+          .call(chart3);
+
+        var domain = r2o3.map(function(d){ return slugify(d.name); });
+        var range = ["#007733", "#eeeeee"];
+        var palette = d3.scale.ordinal().domain(domain).range(range);
+
+        var chart4 = d3waffle()
+          .rows(10)
+          .scale(1)
+          .adjust(1.4)
+          .colorscale(palette)
+          .height(120);
+
+        d3.select("#bwaffle6")
+          .datum(other)
+          .call(chart4);
+
+      });
+
+
+
+
+      /*
+              var domain = data2.map(function(d){ return slugify(d.name); })
+              var range = ["#c7d4b6", "#a3aabd", "#a0d0de", "#97b5cf"]
+              var palette = d3.scale.ordinal().domain(domain).range(range);
+
+              var chart4 = d3waffle()
+                .rows(7)
+                .scale(1/392/2)
+                .colorscale(palette)
+                .appearancetimes(function(d, i){ return i*10 + Math.random()*250;})
+                .height(120);
+
+              d3.select("#container-4")
+                .datum(data2)
+                .call(chart4);
+
+      */
+
+	</script>
+
+
+</body>
+</html>
+
+
+
