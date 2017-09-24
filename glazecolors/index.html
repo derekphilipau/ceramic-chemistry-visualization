@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://derekphilipau.github.io/ceramic-chemistry-visualization/" />
+    <meta property="og:title" content="Ceramic Chemistry Visualization" />
+    <meta property="og:description" content="Various types of web visualizations for ceramics." />
+
+    <title>Glaze Type Colors</title>
+
+    <!--    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:100,300,400" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	<style>
+        body {
+            padding-top: 2rem;
+        }
+
+        .active-link {
+            font-weight: bold;
+        }
+
+        h2 {
+            margin-top: 4rem;
+        }
+
+        .btn-circle {
+            width: 6rem;
+            height: 6rem;
+            border-radius: 3rem;
+            margin: 1rem;
+        }
+
+        .glazetype-470 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-480 {  background-color: #fefef0;  border-color: #cccccc;  }
+        .glazetype-490 {  background-color: #b22222;  border-color: transparent;  }
+        .glazetype-500 {  background-color: #ace1af;  border-color: transparent;  }
+        .glazetype-510 {  background-color: #c4d1e1;  border-color: transparent;  }
+        .glazetype-520 {  background-color: #4b945e;  border-color: transparent;  }
+        .glazetype-530 {  background-color: #ffdb58;  border-color: transparent;  }
+        .glazetype-533 {  background-color: #91a2a3;  border-color: transparent;  }
+        .glazetype-535 {  background-color: #ffbf00;  border-color: transparent;  }
+        .glazetype-540 {  background-color: #654321;  border-color: transparent;  }
+        .glazetype-550 {  background-color: #6c6517;  border-color: transparent;  }
+        .glazetype-560 {  background-color: #63382f;  border-color: transparent;  }
+        .glazetype-570 {  background-color: #9b391c;  border-color: transparent;  }
+        .glazetype-580 {  background-color: #3d3b32;  border-color: transparent;  }
+        .glazetype-585 {  background-color: #8e2222;  border-color: transparent;  }
+        .glazetype-590 {  background-color: #efeee7;  border-color: #cccccc;  }
+        .glazetype-600 {  background-color: #e0d7c5;  border-color: transparent;  }
+        .glazetype-610 {  background-color: #de815b;  border-color: transparent;  }
+        .glazetype-620 {  background-color: #f4e8d0;  border-color: #cccccc;  }
+        .glazetype-630 {  background-color: #f7f3eb;  border-color: #cccccc;  }
+        .glazetype-635 {  background-color: #ee0000;  border-color: transparent;  }
+        .glazetype-640 {  background-color: #a52927;  border-color: transparent;  }
+        .glazetype-650 {  background-color: #9d1624;  border-color: transparent;  }
+        .glazetype-660 {  background-color: #ca211f;  border-color: transparent;  }
+        .glazetype-670 {  background-color: #c7a09a;  border-color: transparent;  }
+        .glazetype-673 {  background-color: #ffc0cb;  border-color: transparent;  }
+        .glazetype-675 {  background-color: #ff1515;  border-color: transparent;  }
+        .glazetype-680 {  background-color: #00cc00;  border-color: transparent;  }
+        .glazetype-690 {  background-color: #2c7649;  border-color: transparent;  }
+        .glazetype-700 {  background-color: #457640;  border-color: transparent;  }
+        .glazetype-710 {  background-color: #437f3f;  border-color: transparent;  }
+        .glazetype-720 {  background-color: #529777;  border-color: transparent;  }
+        .glazetype-730 {  background-color: #749686;  border-color: transparent;  }
+        .glazetype-740 {  background-color: #00ff00;  border-color: transparent;  }
+        .glazetype-745 {  background-color: #40e0d0;  border-color: transparent;  }
+        .glazetype-750 {  background-color: #0000ff;  border-color: transparent;  }
+        .glazetype-760 {  background-color: #0047ab;  border-color: transparent;  }
+        .glazetype-770 {  background-color: #6c94b6;  border-color: transparent;  }
+        .glazetype-780 {  background-color: #29499c;  border-color: transparent;  }
+        .glazetype-790 {  background-color: #33a8b9;  border-color: transparent;  }
+        .glazetype-800 {  background-color: #436a92;  border-color: transparent;  }
+        .glazetype-810 {  background-color: #0000cc;  border-color: transparent;  }
+        .glazetype-820 {  background-color: #800080;  border-color: transparent;  }
+        .glazetype-830 {  background-color: #a41ca4;  border-color: transparent;  }
+        .glazetype-840 {  background-color: #8a0a95;  border-color: transparent;  }
+        .glazetype-850 {  background-color: #5d015d;  border-color: transparent;  }
+        .glazetype-860 {  background-color: #eeeeee;  border-color: #cccccc;  }
+        .glazetype-870 {  background-color: #efefef;  border-color: #cccccc;  }
+        .glazetype-880 {  background-color: #000000;  border-color: transparent;  }
+        .glazetype-890 {  background-color: #2a1c0e;  border-color: transparent;  }
+        .glazetype-900 {  background-color: #222222;  border-color: transparent;  }
+        .glazetype-910 {  background-color: #111111;  border-color: transparent;  }
+        .glazetype-920 {  background-color: #ffff00;  border-color: transparent;  }
+        .glazetype-930 {  background-color: #ffe484;  border-color: transparent;  }
+        .glazetype-940 {  background-color: #e8d04c;  border-color: transparent;  }
+        .glazetype-950 {  background-color: #f5ee25;  border-color: transparent;  }
+        .glazetype-960 {  background-color: #ffff00;  border-color: transparent;  }
+        .glazetype-970 {  background-color: #fff700;  border-color: transparent;  }
+        .glazetype-980 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-990 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1000 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1010 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1020 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1030 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1040 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1050 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1055 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1060 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1070 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1080 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1090 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1100 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1130 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1140 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1150 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1160 {  background-color: #ffffff;  border-color: #cccccc;  }
+        .glazetype-1170 {  background-color: #ffffff;  border-color: #cccccc;  }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Glaze Type Colors</h1>
+    <p class="lead">Standardized colors for glaze types using CSS</p>
+    <hr/>
+    <h5><a href="https://derekphilipau.github.io/ceramic-chemistry-visualization/">View on Github</a></h5>
+
+    <table>
+        <tbody>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-470"></button></td>
+            <td colspan="3">Clear</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-480"></button></td>
+            <td colspan="3">White, Off-White</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-490"></button></td>
+            <td colspan="3">Iron</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-500"></button></td>
+            <td colspan="2">Celadon</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-510"></button></td>
+            <td>Blue</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-520"></button></td>
+            <td>Green</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-530"></button></td>
+            <td>Yellow</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-533"></button></td>
+            <td>Chun, Jun</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-535"></button></td>
+            <td colspan="2">Amber</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-540"></button></td>
+            <td colspan="2">Tenmoku, Temmoku, Tianmu</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-550"></button></td>
+            <td colspan="2">Tea Dust</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-560"></button></td>
+            <td colspan="2">Tessha, Hare's Fur</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-570"></button></td>
+            <td colspan="2">Kaki, Tomato Red</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-580"></button></td>
+            <td colspan="2">Oil Spot</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-585"></button></td>
+            <td colspan="2">Slip-Based</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-590"></button></td>
+            <td colspan="3">Shino</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-600"></button></td>
+            <td colspan="2">Traditional</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-610"></button></td>
+            <td colspan="2">Carbon Trap</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-620"></button></td>
+            <td colspan="2">High-Alumina</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-630"></button></td>
+            <td colspan="2">White</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-635"></button></td>
+            <td colspan="3">Red</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-640"></button></td>
+            <td colspan="2">Copper</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-650"></button></td>
+            <td>Oxblood</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-660"></button></td>
+            <td>Flambe</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-670"></button></td>
+            <td>Peach Bloom</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-673"></button></td>
+            <td colspan="2">Pink</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-675"></button></td>
+            <td colspan="2">Stain</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-680"></button></td>
+            <td colspan="3">Green</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-690"></button></td>
+            <td colspan="2">Copper</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-700"></button></td>
+            <td colspan="2">Oribe</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-710"></button></td>
+            <td colspan="2">Chrome</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-720"></button></td>
+            <td colspan="2">Titanium</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-730"></button></td>
+            <td colspan="2">Nickel</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-740"></button></td>
+            <td colspan="2">Stain</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-745"></button></td>
+            <td colspan="3">Turquoise</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-750"></button></td>
+            <td colspan="3">Blue</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-760"></button></td>
+            <td colspan="2">Cobalt</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-770"></button></td>
+            <td colspan="2">Rutile</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-780"></button></td>
+            <td colspan="2">Barium</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-790"></button></td>
+            <td colspan="2">Strontium</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-800"></button></td>
+            <td colspan="2">Nickel</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-810"></button></td>
+            <td colspan="2">Stain</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-820"></button></td>
+            <td colspan="3">Purple</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-830"></button></td>
+            <td colspan="2">Magnesium Matte</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-840"></button></td>
+            <td colspan="2">Nickel</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-850"></button></td>
+            <td colspan="2">Manganese</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-860"></button></td>
+            <td colspan="3">Matte</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-870"></button></td>
+            <td colspan="2">Magnesium Matte</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-880"></button></td>
+            <td colspan="3">Black</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-890"></button></td>
+            <td colspan="2">Slip-Based</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-900"></button></td>
+            <td colspan="2">Glossy</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-910"></button></td>
+            <td colspan="2">Satin</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-920"></button></td>
+            <td colspan="3">Yellow</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-930"></button></td>
+            <td colspan="2">Iron</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-940"></button></td>
+            <td colspan="2">Barium</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-950"></button></td>
+            <td colspan="2">Manganese</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-960"></button></td>
+            <td colspan="2">Stain</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-970"></button></td>
+            <td colspan="2">Nickel</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-980"></button></td>
+            <td colspan="3">Crystalline</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-990"></button></td>
+            <td colspan="2">Micro</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-1000"></button></td>
+            <td colspan="2">Aventurine</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-1010"></button></td>
+            <td colspan="2">Manganese</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-1020"></button></td>
+            <td colspan="2">Macro</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-1030"></button></td>
+            <td colspan="3">Single-Fire</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-1040"></button></td>
+            <td colspan="3">Wood</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-1050"></button></td>
+            <td colspan="3">Salt & Soda</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-1055"></button></td>
+            <td colspan="3">Raku</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-1060"></button></td>
+            <td colspan="3">Ash</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-1070"></button></td>
+            <td colspan="2">Nuka</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-1080"></button></td>
+            <td colspan="2">Synthetic/Fake</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-1090"></button></td>
+            <td colspan="2">Slip-Based</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-1100"></button></td>
+            <td colspan="3">Majolica</td>
+        </tr>
+        <tr>
+            <td><button type="button" class="btn btn-circle glazetype-1130"></button></td>
+            <td colspan="3">Specialty</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-1140"></button></td>
+            <td colspan="2">Crackle</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-1150"></button></td>
+            <td colspan="2">Crawling</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-1160"></button></td>
+            <td colspan="2">Crater</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-circle glazetype-1170"></button></td>
+            <td colspan="2">Metallic</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+</body>
+</html>
+
+
+
